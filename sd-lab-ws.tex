@@ -121,13 +121,13 @@
 \subsection{About the practical activities}
 
 \begin{frame}
-\frametitle{Lab 7 Repository on GitLab}
+\frametitle{Lab \labN{} Repository on GitLab}
 
 	\begin{itemize}
 		\item Examples and exercises described in this lecture are provided by means of the following GitLab repository:
 		%
 		\begin{center}
-			\url{https://gitlab.com/pika-lab/courses/ds/aa1920/lab-07}
+			\url{\labRepo}
 		\end{center}
 		
 		\vfill
@@ -143,15 +143,15 @@
 		\item We kindly suggest to import the cloned repository into some IDE (e.g. IntelliJ Idea or Eclipse) since the volume of the provided code is considerable
 		%
 		%
-		\begin{itemize}
-		    \item in case of problems in importing the project on IntelliJ, try to downgrade the gradle wrapper
-		    %
-		    \item[\$] \texttt{./gradlew wrapper \alert{--gradle-version \textit{4.8.1}}}
-		\end{itemize}
+		% \begin{itemize}
+		%     \item in case of problems in importing the project on IntelliJ, try to downgrade the gradle wrapper
+		%     %
+		%     \item[\$] \texttt{./gradlew wrapper \alert{--gradle-version \textit{4.8.1}}}
+		% \end{itemize}
 		
 		\vfill
 		
-		\item In order to be able to submit your exercises, please ensure you requested access to the \href{https://gitlab.com/pika-lab/courses/ds/aa1920}{GitLab group of the course}
+		\item In order to be able to submit your exercises, please ensure you requested access to the \href{\labGroup}{GitLab group of the course}
 	\end{itemize}
 
 \end{frame}
@@ -553,6 +553,209 @@
     \end{itemize}
     
 \end{frame}
+
+\section{HTTP in Practice}
+
+\subsection{Overview}
+
+\begin{frame}{Client- vs. Server-side}
+    
+    \begin{itemize}
+        \item When working HTTP, developers rarely implement the protocol from scratch
+        
+        \vfill
+
+        \item Conversely, they rely on pre-existing libraries of HTTP-based development
+        
+        \vfill
+
+        \item Virtually all languages/platforms provide some library for HTTP 
+        %
+        \begin{itemize}
+            \item either via their Standard Library or via third-party libraries
+        \end{itemize}
+
+        \vfill
+
+        \item Regardeless of technological details, HTTP libraries are of 2 sorts:
+        %
+        \begin{description}
+            \item[\emph{client}-side] libraries, exposing some means to \alert{issue} HTTP requests towards some server
+            \item[\emph{server}-side] libraries, exposing some means to \alert{serve} HTTP requests coming from clients
+        \end{description}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{HTTP Libraries for Java}
+
+    \begin{itemize}
+        \item Java SE is poorly suited for HTTP
+        %
+        \begin{itemize}
+            \item especially for Java $<$ 11
+            \item conversely, Java EE is plenty of industry-ready tools for WS
+        \end{itemize}
+
+        \vfill
+
+        \item However, the JVM ecosystem is plenty of open-source libraries for HTTP programming
+        
+    \end{itemize}
+
+    \vfill
+
+    \begin{block}{JVM technologies for HTTP \textbf{server}-side}
+        \href{https://vertx.io}{Vert.X}, 
+        \href{https://javalin.io/}{\emph{Javalin}},
+        \href{https://www.playframework.com/}{Play},
+        \href{https://javaee.github.io/glassfish/}{Glassfish},
+        \href{http://nanohttpd.org}{NanoHTTPd}
+    \end{block}
+
+    \vfill
+
+    \begin{block}{JVM technologies for HTTP \textbf{client}-side}
+        \href{https://vertx.io}{Vert.X}, 
+        \href{https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html}{\emph{\texttt{java.net.http.*} (since Java 11)}},
+        \href{https://github.com/googleapis/google-http-java-client}{Google HTTP Client Library for Java},
+        \href{https://hc.apache.org/}{Apache's HTTP Components},
+        \href{https://square.github.io/okhttp/}{OkHttp}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}{HTTP Libraries for Java in this Course}
+    In this course we focus upon:
+    %
+    \begin{description}
+        \item[\href{https://javalin.io/}{\emph{Javalin}}] for what concerns the \alert{server}-side
+        \item[\href{https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html}{\emph{\texttt{java.net.http.*}}}] for what concerns the \alert{client}-side 
+        %
+        \begin{itemize}
+            \item[!] please ensure your JDK is $\geq 11$
+        \end{itemize} 
+    \end{description}
+
+    \vfill
+
+    \begin{block}{Takeaway}
+        \begin{itemize}
+            \item Despite syntactical differences, server-side HTTP libraries share similar API
+            \item A similar argument holds for client-side HTTP libraries
+            \item We will try to keep our discussion general
+        \end{itemize}
+    \end{block}
+
+\end{frame}
+
+\subsection{Client-side Programming}
+
+\begin{frame}%[allowframebreaks]
+\frametitle{General Client-side Library}
+
+    You can expect a \emph{client}-side HTTP library to expose these functionalities:
+    %
+    \begin{itemize}
+        \item represent URI/URL
+        
+        \vfill
+
+        \item add \emph{query parameters} to URI/URL
+        
+        \vfill
+
+        \item URL-encode or decode strings
+        
+        \vfill
+
+        \item (de)serialize data (usually in/from XML, \alert{JSON}, or YAML)
+        
+        \vfill
+
+        \item build HTTP \emph{requests}, letting developers specify:
+        %
+        \begin{itemize}
+            \item the target URI/URL (possibly including query parameters)
+            \item the HTTP \emph{method}
+            \item one or more HTTP \emph{headers}
+            \item the \emph{body} of the request (out of strings, streams, byte arrays, etc)
+        \end{itemize}
+
+        \vfill
+
+        \item handle HTTP responses, possibly \emph{asynchronously} and \emph{concurrently}
+        
+        \vfill
+
+        \item configure several low level protocol aspects
+        %
+        \begin{itemize}
+            \item e.g. timeouts, cookies, cryptographic certificates, etc
+        \end{itemize} 
+    \end{itemize}
+\end{frame}
+
+\subsection{Server-side Programming}
+
+\begin{frame}%[allowframebreaks]
+    \frametitle{General Server-side Library}
+    
+        You can expect a \emph{server}-side HTTP library to expose these functionalities:
+        %
+        \begin{itemize}
+            \item spawn one or more servers, listening on \emph{different ports}
+            
+            \vfill
+    
+            \item configure one or more \emph{routes} on each server, by specifying:
+            %
+            \begin{itemize}
+                \item the route \emph{method}
+                \item the (possibly \emph{parametric}) route \emph{path}
+                \item a \emph{callback} to be invoked for each request matching the route
+            \end{itemize}
+            %
+            possibly in a \emph{hierarchical} way
+
+            \vfill
+
+            \item schedule \emph{pre}- or \emph{post}-processing activities on \emph{bunches} of routes
+            %
+            \begin{itemize}
+                \item possibly, via \emph{path templates}
+                \item (this is usually achieved via \emph{callbacks} as well)
+            \end{itemize}
+
+            \vfill
+    
+            \item URL-encode or decode strings \& (de)serialize data
+
+            \vfill
+
+            \item inspect relevant fields of requests, upon reception
+            %
+            \begin{itemize}
+                \item e.g. the actual method, URL, headers, body of the request
+            \end{itemize}
+    
+            \vfill
+    
+            \item build HTTP \emph{responses}, possibly \emph{asynchronously} and \emph{concurrently}
+            %
+            \begin{itemize}
+                \item by specifying their \emph{status code}, body, headers, etc.
+            \end{itemize}
+            
+            \vfill
+    
+            \item configure several low level protocol aspects
+            %
+            \begin{itemize}
+                \item e.g. timeouts, connections management, cryptographic certificates, etc
+            \end{itemize} 
+        \end{itemize}
+    \end{frame}
 
 \section{ReSTfull WS Design}
 
