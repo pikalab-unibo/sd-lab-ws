@@ -118,6 +118,45 @@
     \end{itemize}
 \end{frame}
 
+\subsection{About the practical activities}
+
+\begin{frame}
+\frametitle{Lab 7 Repository on GitLab}
+
+	\begin{itemize}
+		\item Examples and exercises described in this lecture are provided by means of the following GitLab repository:
+		%
+		\begin{center}
+			\url{https://gitlab.com/pika-lab/courses/ds/aa1920/lab-07}
+		\end{center}
+		
+		\vfill
+		
+		\item Clone it on your machine using Git
+		%
+		\begin{itemize}
+		    \item[\$] \texttt{git clone \textit{<repo URL>}}
+		\end{itemize}
+		
+		\vfill
+		
+		\item We kindly suggest to import the cloned repository into some IDE (e.g. IntelliJ Idea or Eclipse) since the volume of the provided code is considerable
+		%
+		%
+		\begin{itemize}
+		    \item in case of problems in importing the project on IntelliJ, try to downgrade the gradle wrapper
+		    %
+		    \item[\$] \texttt{./gradlew wrapper \alert{--gradle-version \textit{4.8.1}}}
+		\end{itemize}
+		
+		\vfill
+		
+		\item In order to be able to submit your exercises, please ensure you requested access to the \href{https://gitlab.com/pika-lab/courses/ds/aa1920}{GitLab group of the course}
+	\end{itemize}
+
+\end{frame}
+
+
 \section{Recall the HTTP protocol}
 
 \subsection{Overview}
@@ -597,6 +636,311 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
 \begin{frame}[allowframebreaks]{Route definition example}
     \lstinputlisting[language=yaml]{code/RouteExample.yaml}
+\end{frame}
+
+\section{\linda{} Web Service}
+
+\subsection{Overview}
+
+\begin{frame}{Overview I}
+    \centering
+    \includegraphics[height=.8\textheight]{img/whole-picture.pdf}
+\end{frame}
+
+\begin{frame}{Overview II}
+    \begin{itemize}
+        \item In this Lab we will focus on designin \& implementing a \alert{web service} wrapping our \texttt{TextualSpace}s
+        
+        \vfill
+        
+        \item This is the first step towards the \alert{distribution} of \linda{} tuple spaces over the network
+        
+        \vfill
+        
+        \item After that, we may virtually write a \alert{web client} for any platform, thus bringing \linda{} on other platforms as well
+        
+        \vfill
+        
+        \item In that case, distribution could be made \alert{transparent} by wrapping the web client behind the good old local interface
+    \end{itemize}
+\end{frame}
+
+\subsection{Design}
+
+\begin{frame}[allowframebreaks]{Design of \linda{} WS}
+    \begin{itemize}
+        \item The design of the \linda{} WS \alert{API} is provided through SwaggerHub
+        %
+        \begin{center}
+            \url{https://app.swaggerhub.com/apis/PIKA-lab/Linda-WS/1}
+        \end{center}
+        
+        \vspace{.3cm}
+        
+        \item The proposed API exposes two main groups of routes:
+        %
+        \begin{itemize}
+            \item one (\alert{users}) aimed at supporting clients identities management
+            \item the other (\alert{tuple-spaces}) aimed at supporting textual spaces and coordination of clients
+        \end{itemize}
+        
+        \framebreak
+        
+        \includegraphics[width=\linewidth]{img/ws-api-users.png}
+        
+        \framebreak
+        
+        \item Clients can register themselves using unique usernames, addresses, and passwords
+        %
+        \begin{itemize}
+            \item Upon registration, they are endowed with an \href{https://it.wikipedia.org/wiki/Universally_unique_identifier}{Universally unique identifier} (UUID)
+            
+            \item Clients can either be \alert{admins or users}
+            
+            \item In order to be authenticated, clients must provide their \alert{plain text} credential within the \alert{\texttt{Authorization}} header, in the form 
+            %
+            \begin{center}
+                \texttt{\{ "username": "<value>", "password": "value" \}}
+            \end{center}
+            Notice that \alert{this is a BAD practice} that we do here just for simplicity
+            
+            \item \alert{Unauthenticated} clients can interact with the service too, but in a restricted way
+            
+            \item A logged client can be referenced by means of its username, its address, or its UUID 
+            %
+            \begin{itemize}
+                \item i.e. each of these fields can act as an \alert{identifier}
+            \end{itemize}
+        \end{itemize}
+        
+        \framebreak
+        
+        \includegraphics[width=\linewidth]{img/ws-api-tuple-spaces.png}
+        
+        \framebreak
+        
+        \item Clients may interact by issuing \alert{\linda{} operations} in the form of \alert{HTTP requests} directed towards some textual space wrapped by the service
+        %
+        \begin{itemize}
+            \item textual spaces are referenced through URLs in the form
+            %
+            \begin{center}
+                \texttt{/linda/v1/tuple-spaces/\{tupleSpaceName\}}
+            \end{center}
+            
+            \item tuples are \alert{JSON/YAML files} in the form
+            %
+            \begin{center}
+                \texttt{\{"value": "<string tuple>"\}}
+            \end{center}
+            
+            \item templates are \alert{query parameters} in the form
+            %
+            \begin{center}
+                \texttt{template=<regex template>}
+            \end{center}
+            
+            \item primitives are mapped into HTTP methods as follows:
+            %
+            \begin{center}
+                \begin{tabular}{c||c|c|c|c|c}
+                    \textbf{Primitive} & \texttt{in} & \texttt{rd} & \texttt{out} & \texttt{get} & \texttt{getSize}
+                    \\
+                    \hline
+                    \textbf{Method} & \texttt{DELETE} & \texttt{GET} & \texttt{POST} & \texttt{GET} & \texttt{GET}
+                \end{tabular}
+            \end{center}
+        \end{itemize}
+        
+        \vspace{.3cm}
+        
+        \item Consider reading the API for more details
+    \end{itemize}
+\end{frame}
+
+\subsection{Implementation}
+
+\begin{frame}{The \texttt{sd.lab.ws.*} package}
+    
+    The provided code is organised in the many subpackages of \texttt{sd.lab.ws.*}
+    %
+    \vfill
+    %
+    \begin{itemize}
+        
+        \item \alert{\texttt{sd.lab.ws.\textit{presentation}}} contains several classes for the \alert{(un)marshalling} of relevant data types in JSON/XML/YAML
+        
+        \vfill
+        
+        \item \alert{\texttt{sd.lab.ws.\textit{exceptions}}} contains several sorts of \alert{exceptions}, corresponding to as many HTTP errors
+        
+        \vfill
+        
+        \item \alert{\texttt{sd.lab.ws.\textit{storage}}} contains some classes for emulating a \alert{database} 
+        storing users or tuple spaces
+        
+        \vfill
+        
+        \item \alert{\texttt{sd.lab.ws.\textit{auth}}} contains some basic \alert{authentication} facilities
+        
+        \vfill
+        
+        \item \alert{\texttt{sd.lab.ws.\textit{routes}}} contains routes implementation \alert{stubs}
+        
+        \vfill
+        
+        \item \alert{\texttt{sd.lab.ws.\textit{api}}} contains routes actual \alert{business logics}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Package \texttt{sd.lab.ws.\textit{presentation}} -- Overview}
+    
+    \centering
+    \includegraphics[width=\linewidth]{img/pkg-presentation.png}
+    
+\end{frame}
+
+\begin{frame}{Package \texttt{sd.lab.ws.\textit{exceptions}} -- Overview}
+    
+    \centering
+    \includegraphics[width=\linewidth]{img/pkg-exceptions.png}
+    
+\end{frame}
+
+\begin{frame}{Package \texttt{sd.lab.ws.\textit{storage}} -- Overview}
+    
+    \centering
+    \includegraphics[width=.7\linewidth]{img/pkg-storage.png}
+    
+\end{frame}
+
+\begin{frame}{Package \texttt{sd.lab.ws.\textit{routes}} -- Overview}
+    
+    \centering
+    \includegraphics[width=\linewidth]{img/pkg-routes.png}
+    
+\end{frame}
+
+\begin{frame}{Package \texttt{sd.lab.ws.\textit{api}} -- Overview}
+    
+    \centering
+    \includegraphics[width=\linewidth]{img/pkg-api.png}
+    
+\end{frame}
+
+\begin{frame}{Main class \texttt{sd.lab.ws.\textit{Service}} -- Overview}
+    
+    \centering
+    \includegraphics[width=.5\linewidth]{img/Service.png}
+    
+\end{frame}
+
+\begin{frame}{Dynamic Structure of Paths and Routes}
+    
+    \texttt{Service}
+    \begin{itemize}
+        \item \texttt{LindaPath}
+        %
+        \begin{itemize}
+            \item \texttt{TupleSpacePath}
+            %
+            \begin{itemize}
+                \item \texttt{GET /users}
+                \item \texttt{POST /users}
+                \item \texttt{GET /users/\textit{\{identifier\}}}
+                \item \texttt{PUT /users/\textit{\{identifier\}}}
+            \end{itemize}
+            \item \texttt{UsersPath}
+            %
+            \begin{itemize}
+                \item \texttt{GET /tuple-spaces}
+                \item \texttt{GET /tuple-spaces/\textit{\{tupleSpaceName\}}}
+                \item \texttt{POST /tuple-spaces/\textit{\{tupleSpaceName\}}}
+                \item \texttt{DELETE /tuple-spaces/\textit{\{tupleSpaceName\}}}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    
+\end{frame}
+
+\section{Exercises}
+
+\begin{frame}{Exercise 7-0 -- Understanding}
+    \begin{enumerate}
+        \item Understand the \linda{} WS API on SwaggerHub
+        %
+        \begin{center}
+            \url{https://app.swaggerhub.com/apis/PIKA-lab/Linda-WS/1}
+        \end{center}
+        
+        \vfill
+        
+        \item Understand the structure of the provided code, by navigating it
+        
+        \vfill
+        
+        \item Localise the many TODO into the code
+        
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise 7-1 -- Work with resources}
+    \begin{enumerate}
+        \item Let's focus on the \texttt{"users"} group of routes
+        
+        \vfill
+        
+        \item Have a look to the \texttt{UsersPath} class and the \alert{UsersApi} interface
+        %
+        \begin{itemize}
+            \item Can you understand the meaning \& purpose of each one?
+            \item Can you understand what a \alert{stub} is?
+        \end{itemize}
+        
+        \vfill
+        
+        \item Localise the many TODO into the code
+        
+        \vfill
+        
+        \item Fill the TODOs with your solution
+        
+        \vfill
+        
+        \item Your solution is correct if tests in suit \texttt{TestUsers} succeed
+        
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Exercise 7-2 -- Wrap tuple spaces}
+    \begin{enumerate}
+        \item Let's focus on the \texttt{"tuple-spaces"} group of routes
+        
+        \vfill
+        
+        \item Have a look to the \texttt{TupleSpacePath} class and the \alert{TupleSpaceApi} interface
+        %
+        \begin{itemize}
+            \item Can you understand the meaning \& purpose of each one?
+        \end{itemize}
+        
+        \vfill
+        
+        \item Localise the many TODO into the code
+        
+        \vfill
+        
+        \item Fill the TODOs with your solution
+        %
+        \begin{itemize}
+            \item this time you are required to set up routes and reason on how to implement the ReST API
+        \end{itemize}
+        
+        \vfill
+        
+        \item Tests are a work in progress :)
+        
+    \end{enumerate}
 \end{frame}
 
 %===============================================================================

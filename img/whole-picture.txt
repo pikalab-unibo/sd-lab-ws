@@ -1,0 +1,11 @@
+@startuml
+package "Lab 1-6" {
+  [TextualSpaceImpl] ..> [TextualSpace]: implements
+}
+package "Lab 7-" {
+[TextualSpace] <-- [Web Service]: wraps
+[Web Client] -(0- [Web Service] : HTTP
+[RemoteTextualSpace] --> [Web Client]: wraps
+}
+[RemoteTextualSpace] ..> [TextualSpace]: implements
+@enduml
