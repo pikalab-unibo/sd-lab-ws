@@ -7,21 +7,42 @@
 \usepackage{my-listings}
 \usepackage{forloop}
 
-\title[L7 -- ReSTfull Web Services]{ReSTfull Web Services}
+\newcommand{\bs}[1]{\textbackslash{}#1}
+\newcommand{\labN}{8}
+\newcommand{\labGroup}{https://gitlab.com/pika-lab/courses/ds/ay2021}
+\newcommand{\labRepo}{\labGroup/lab-\labN}
+
+\title{L\labN{} -- ReSTfull Web Services}
 %
-\subtitle[SD]
-{Distributed Systems / Laboratory\\\scriptsize Sistemi Distribuiti / Laboratorio}
+\subtitle[SD]{Distributed Systems / Technologies}
 %
 \author[Ciatto \and Omicini]
 {\emph{Giovanni Ciatto} \and Andrea Omicini\\
-	\texttt{giovanni.ciatto@unibo.it} \and \texttt{andrea.omicini@unibo.it}}
+	\texttt{giovanni.ciatto@unibo.it \and andrea.omicini@unibo.it}}
 %
 \institute[DISI, Univ. Bologna]
 {Dipartimento di Informatica -- Scienza e Ingegneria (DISI)\\\textsc{Alma Mater Studiorum} -- Universit{\`a} di Bologna a Cesena}
 %
-\date[A.Y. 2019/2020]{Academic Year 2019/2020}
+\date[A.Y. 2020/2021]{Academic Year 2020/2021}
 
 \setbeamercovered{transparent}
+
+\AtBeginSection{
+	\begin{frame}[c]\frametitle{Outline}
+		% 		\begin{multicols}{2}
+		\tableofcontents[sectionstyle=show/shaded, subsectionstyle=hide/hide, subsubsectionstyle=hide/hide]
+		% 		\end{multicols}
+	\end{frame}
+}
+
+\AtBeginSubsection{
+	\begin{frame}[c]\frametitle{Next in Line\ldots}
+		\begin{multicols}{2}
+			\small
+			\tableofcontents[sectionstyle=show/shaded, subsectionstyle=show/shaded, subsubsectionstyle=hide/hide]
+		\end{multicols}
+	\end{frame}
+}
 
 \begin{document}
 	
