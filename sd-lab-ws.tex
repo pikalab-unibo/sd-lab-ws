@@ -50,7 +50,7 @@
 \frame{\titlepage}
 %\\\\\\\\\\\\\\\\\\\\\
 
-\section{Whetting your appetite}
+\section{Motivation and Goals}
 
 \begin{frame}[allowframebreaks]
 \frametitle{Motivation}
@@ -421,7 +421,7 @@
         
         \vfill
         
-        \item Such documents are usually \alert{encoded} according to a MIME type
+        \item Such documents are usually \alert{represented} according to a MIME type
         %
         \begin{itemize}
             \item Most common ones are \texttt{text/\alert{html}}, \texttt{application/\alert{xml}}, \texttt{application/\alert{json}}, and \href{https://en.wikipedia.org/wiki/YAML}{\texttt{application/\alert{yaml}}}
@@ -538,9 +538,9 @@
             
             \item[+] a (possibly \emph{parametric}) URL
             
-            \item[+] a set of input arguments, along with their schema, place (URL, body, query, header), and supported encoding
+            \item[+] a set of input arguments, along with their schema, place (URL, body, query, header), and supported MIME types
             
-            \item[+] a set of possible status codes, along with their result types \& encoding
+            \item[+] a set of possible status codes, along with their result types \& MIME type
         \end{itemize}
         
         \vfill
@@ -554,6 +554,90 @@
     
 \end{frame}
 
+\section{ReSTfull WS Design}
+
+\subsection{Workflow}
+
+\begin{frame}{ReST project design workflow}
+
+When designing a ReST-full web-service, you are encouraged to follow this procedure:
+%
+\begin{enumerate}
+    \item structure your application in terms of \alert{resources} and \alert{sub-resources}
+    
+    \vfill
+    
+    \item for each (sub-)resource, define a possibly parametric \alert{path}
+    
+    \vfill
+    
+    \item for each path, define the \alert{methods} it supports, thus defining a \alert{route} 
+    
+    \vfill
+    
+    \item for each route, define:
+    %
+    \begin{enumerate}
+        \item the supported \alert{query parameters} for the request
+        
+        \item the supported input \alert{MIME types} and the \alert{schema} of the request body. if any
+        
+        \item all the possible results, i.e.:
+        %
+        \begin{itemize}
+            \item all possible \alert{status codes}\ldots
+            
+            \item \ldots and the corresponding schemas for the response bodies
+            
+        \end{itemize}
+        
+        \item optionally, you may also define if \alert{authentication} is required and which sorts of \alert{authorizations} are needed
+    \end{enumerate}
+\end{enumerate}
+
+\end{frame}
+
+\subsection{OpenAPI Specification}
+
+\begin{frame}{OpenAPI Specification and Swagger}
+
+The design and test phases of a ReST-full web service \alert{API} can be greatly simplified by some (almost) standard technologies:
+%
+\begin{itemize}
+    \item The \alert{OpenAPI Specification} (OAS) is a formal language for describing the API of the service
+    %
+    \begin{itemize}
+        \item Current version of the specification is \href{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md}{version 3.1.0}, but we will use \href{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md}{version 2.0} since it is more mature
+    \end{itemize}
+    
+    \vfill
+    
+    \item In practice, one may actually define a service API by writing a \alert{YAML/JSON file} adhering to the OAS
+    
+    \vfill
+    
+    \item \href{https://swagger.io}{Swagger} is a community developing and maintaining the OAS, other than a number of useful tools easing the life of API designers and implementors
+    %
+    \begin{itemize}
+        \item \href{https://editor.swagger.io}{Swagger Editor} is a web-based editor for writing specification files
+        
+        \item \href{https://swagger.io/tools/swagger-codegen/}{Swagger Codegen} is a tool generating client and server stubs out of an OAS specification file
+        
+        \item \href{https://app.swaggerhub.com}{SwaggerHub} is a web repository letting people edit, store, and publish their services APIs
+    \end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Main structure of a OAS specification file}
+    \lstinputlisting[language=yaml]{code/SwaggerMain.yaml}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Route definition example}
+    \lstinputlisting[language=yaml]{code/RouteExample.yaml}
+\end{frame}
+
 \section{HTTP in Practice}
 
 \subsection{Overview}
@@ -561,7 +645,7 @@
 \begin{frame}{Client- vs. Server-side}
     
     \begin{itemize}
-        \item When working HTTP, developers rarely implement the protocol from scratch
+        \item When working with HTTP, developers rarely implement the protocol from scratch
         
         \vfill
 
@@ -688,7 +772,7 @@
         
         \vfill
 
-        \item configure several low level protocol aspects
+        \item configure several low-level protocol aspects
         %
         \begin{itemize}
             \item e.g. timeouts, cookies, cryptographic certificates, etc
@@ -699,153 +783,238 @@
 \subsection{Server-side Programming}
 
 \begin{frame}%[allowframebreaks]
-    \frametitle{General Server-side Library}
-    
-        You can expect a \emph{server}-side HTTP library to expose these functionalities:
+\frametitle{General Server-side Library}
+
+    You can expect a \emph{server}-side HTTP library to expose these functionalities:
+    %
+    \begin{itemize}
+        \item spawn one or more servers, listening on \emph{different ports}
+        
+        \vfill
+
+        \item configure one or more \emph{routes} on each server, by specifying:
         %
         \begin{itemize}
-            \item spawn one or more servers, listening on \emph{different ports}
+            \item the route \emph{method}
+            \item the (possibly \emph{parametric}) route \emph{path}
+            \item a \emph{callback} to be invoked for each request matching the route
+        \end{itemize}
+        %
+        possibly in a \emph{hierarchical} way
+
+        \vfill
+
+        \item schedule \emph{pre}- or \emph{post}-processing activities on \emph{bunches} of routes
+        %
+        \begin{itemize}
+            \item possibly, via \emph{path templates}
+            \item (this is usually achieved via \emph{callbacks} as well)
+        \end{itemize}
+
+        \vfill
+
+        \item URL-encode or decode strings \& (de)serialize data
+
+        \vfill
+
+        \item inspect relevant fields of requests, upon reception
+        %
+        \begin{itemize}
+            \item e.g. the actual method, URL, headers, body of the request
+        \end{itemize}
+
+        \vfill
+
+        \item build HTTP \emph{responses}, possibly \emph{asynchronously} and \emph{concurrently}
+        %
+        \begin{itemize}
+            \item by specifying their \emph{status code}, body, headers, etc.
+        \end{itemize}
+        
+        \vfill
+
+        \item configure several low-level protocol aspects
+        %
+        \begin{itemize}
+            \item e.g. timeouts, connections management, cryptographic certificates, etc
+        \end{itemize} 
+    \end{itemize}
+\end{frame}
+
+\subsection{(De)Serialisation}
+
+\begin{frame}%[allowframebreaks]
+\frametitle{About (De)Serialisation}
+
+    \begin{itemize}
+        \item HTTP server- and client-side libraries rarely include some actual support for (de)serialising data 
+        
+        \vfill
+
+        \item Generally speaking, a (de)serialisation library exposes some means to 
+        %
+        \begin{itemize}
+            \item \emph{serialise} data, i.e. convert  in-memory objects into char/byte sequences
+
+            \item \emph{deserialise} data, i.e. parse chars/bytes back into in-memory object of some \emph{type}
+        \end{itemize}
+
+        \vfill
+
+        \item Possibly leveraging some common \emph{data representation format}
+        %
+        \begin{itemize}
+            \item[eg] textual formats such as XML, JSON, YAML
+            \item[eg] binary formats such as BSON, XDR, AVRO's, Protobuf's
+        \end{itemize}
+    \end{itemize}
+
+    \vfill
+
+    \begin{block}{Data representation format $\neq$ Encoding}\small
+        \begin{itemize}
+            \item (D)Econders just provide a particular means to interpret bytes/chars
+            \item (De)Serialisers also provide some means to represent \emph{data structures}
             
-            \vfill
-    
-            \item configure one or more \emph{routes} on each server, by specifying:
+            \item[!] All data-representation formats explicitly or implicitly rely on some encoding
             %
             \begin{itemize}
-                \item the route \emph{method}
-                \item the (possibly \emph{parametric}) route \emph{path}
-                \item a \emph{callback} to be invoked for each request matching the route
-            \end{itemize}
-            %
-            possibly in a \emph{hierarchical} way
-
-            \vfill
-
-            \item schedule \emph{pre}- or \emph{post}-processing activities on \emph{bunches} of routes
-            %
-            \begin{itemize}
-                \item possibly, via \emph{path templates}
-                \item (this is usually achieved via \emph{callbacks} as well)
-            \end{itemize}
-
-            \vfill
-    
-            \item URL-encode or decode strings \& (de)serialize data
-
-            \vfill
-
-            \item inspect relevant fields of requests, upon reception
-            %
-            \begin{itemize}
-                \item e.g. the actual method, URL, headers, body of the request
-            \end{itemize}
-    
-            \vfill
-    
-            \item build HTTP \emph{responses}, possibly \emph{asynchronously} and \emph{concurrently}
-            %
-            \begin{itemize}
-                \item by specifying their \emph{status code}, body, headers, etc.
-            \end{itemize}
-            
-            \vfill
-    
-            \item configure several low level protocol aspects
-            %
-            \begin{itemize}
-                \item e.g. timeouts, connections management, cryptographic certificates, etc
+                \item[eg] most textual data representation formats rely on \texttt{UTF-8}
             \end{itemize} 
         \end{itemize}
-    \end{frame}
+    \end{block}
 
-\section{ReSTfull WS Design}
+\end{frame}
 
-\subsection{Workflow}
+\begin{frame}%[allowframebreaks]
+    \frametitle{About (De)Serialisation in Java}
 
-\begin{frame}{ReST project design workflow}
-
-When designing a ReST-full web-service, you are encouraged to follow this procedure:
-%
-\begin{enumerate}
-    \item structure your application in terms of \alert{resources} and \alert{sub-resources}
-    
-    \vfill
-    
-    \item for each (sub-)resource, define a possibly parametric \alert{path}
-    
-    \vfill
-    
-    \item for each path, define the \alert{methods} it supports, thus defining a \alert{route} 
-    
-    \vfill
-    
-    \item for each route, define:
-    %
-    \begin{enumerate}
-        \item the supported \alert{query parameters} for the request
-        
-        \item the supported input \alert{MIME types} and the \alert{schema} of the request body. if any
-        
-        \item all the possible results, i.e.:
+    \begin{itemize}
+        \item Java SE is quite well suited for (de)serialisation
         %
         \begin{itemize}
-            \item all possible \alert{status codes}\ldots
-            
-            \item \ldots and the corresponding schemas for the response bodies
-            
+            \item[eg] Java's binary serialization framework (a.k.a. \texttt{ObjectInputStream} \& \texttt{ObjectOutputStream})
+            \item[eg] Java's \texttt{javax.xml.*} package
         \end{itemize}
+
+        \vfill
+
+        \item However, the JVM ecosystem is plenty of open-source libraries for JSON / YAML support
         
-        \item optionally, you may also define if \alert{authentication} is required and which sorts of \alert{authorizations} are needed
-    \end{enumerate}
-\end{enumerate}
-
-\end{frame}
-
-\subsection{OpenAPI Specification}
-
-\begin{frame}{OpenAPI Specification and Swagger}
-
-The design and test phases of a ReST-full web service \alert{API} can be greatly simplified by some (almost) standard technologies:
-%
-\begin{itemize}
-    \item The \alert{OpenAPI Specification} (OAS) is a formal language for describing the API of the service
-    %
-    \begin{itemize}
-        \item Current version of the specification is \href{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md}{version 3.1.0}, but we will use \href{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md}{version 2.0} since it is more mature
-    \end{itemize}
-    
-    \vfill
-    
-    \item In practice, one may actually define a service API by writing a \alert{YAML/JSON file} adhering to the OAS
-    
-    \vfill
-    
-    \item \href{https://swagger.io}{Swagger} is a community developing and maintaining the OAS, other than a number of useful tools easing the life of API designers and implementors
-    %
-    \begin{itemize}
-        \item \href{https://editor.swagger.io}{Swagger Editor} is a web-based editor for writing specification files
-        
-        \item \href{https://swagger.io/tools/swagger-codegen/}{Swagger Codegen} is a tool generating client and server stubs out of an OAS specification file
-        
-        \item \href{https://app.swaggerhub.com}{SwaggerHub} is a web repository letting people edit, store, and publish their services APIs
     \end{itemize}
 
-\end{itemize}
+    \vfill
+
+    \begin{block}{JVM technologies for (de)serialisation}
+        \href{https://github.com/google/gson}{\emph{Gson}}, 
+        \href{https://github.com/FasterXML/jackson}{Jackson},
+        \href{https://avro.apache.org/docs/1.10.0/}{Apache Avro},
+        \href{https://developers.google.com/protocol-buffers}{Google's Protocol Buffers},
+        \href{https://thrift.apache.org/}{Thrift}
+    \end{block}
+    %
+    \begin{itemize}\small
+        \item[!] Avro, Thrift, and ProtoBuff are actually full-fledged tools for Middleware development
+    \end{itemize}
 
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Main structure of a OAS specification file}
-    \lstinputlisting[language=yaml]{code/SwaggerMain.yaml}
+\begin{frame}[allowframebreaks]
+    \frametitle{General (De)Serialisation Library}
+    
+    You can expect a (de)serialisation library to expose these functionalities:
+    %
+    \bigskip
+    %
+    \begin{itemize}
+        \item \emph{convert} objects of some \emph{type} into strings, according to some format
+        
+        \bigskip
+
+        \item \emph{write} objects of some \emph{type} onto output streams, according to some format
+        
+        \bigskip
+
+        \item \emph{parse} strings in some format into objects of some type \emph{type}
+        
+        \bigskip
+
+        \item \emph{read} input streams, parse them according to some format, outputting objects of some \emph{type} 
+    \end{itemize}
+
+    \framebreak
+
+    \begin{block}{(De)Serialisation usually involves the construction of an AST}
+        \hint{AST = abstract syntax tree}
+        \begin{description}
+            \item[Serialisation:] in-memory object $\rightarrow$ AST $\rightarrow$ byte/char string
+            \item[Deserialisation:] byte/char string $\rightarrow$ AST $\rightarrow$ in-memory object
+        \end{description}
+        %
+        \medskip
+        %
+        \begin{itemize}
+            \item Libraries usually include some \emph{types} to let developers build the AST
+            %
+            \begin{itemize}
+                \item[eg] \texttt{JsonElement} and its subclasses in Gson
+                \item[eg] \texttt{JsonNode} and its subclasses in Jackson
+            \end{itemize}
+
+            \smallskip
+
+            \item Most libraries are able to read/write several \emph{concrete} syntaxes for the same AST
+            \begin{itemize}
+                \item[eg] Jackson may read/write XML, JSON, or YAML from a \texttt{JsonNode}
+            \end{itemize}
+
+            \smallskip
+
+            \item[!] When the concrete syntax is XML, the AST is a.k.a. \emph{Domain Object Model} (DOM)
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Route definition example}
-    \lstinputlisting[language=yaml]{code/RouteExample.yaml}
+\begin{frame}%[allowframebreaks]
+    \frametitle{(De)Serialisation in Strongly-Typed Languages}
+
+    \begin{itemize}
+        \item Serialisation and deserialisation are somewhat \emph{asymmetrical} in OOP libraries
+        
+        \vfill
+
+        \item While serialising, libriaries know both:
+        %
+        \begin{itemize}
+            \item the actual type of the in-memory object to be serialised
+            \item the target data representation format 
+        \end{itemize}
+
+        \vfill
+
+        \item While deserialising, libraries only know:
+        %
+        \begin{itemize}
+            \item the actual data representation format of the to-be-parsed string
+            \item while the target type the wanna-be in-memory object is unknown
+        \end{itemize}
+
+        \vfill
+
+        \item[$\rightarrow$] Developers must always specify the \emph{expected type} upon deserialisation
+        %
+        \begin{itemize}
+            \item subtle technicality with deep implications
+        \end{itemize} 
+    \end{itemize}
+
 \end{frame}
 
 \section{\linda{} Web Service}
 
 \subsection{Overview}
 
-\begin{frame}[allowframebreaks]{Overview I}
+\begin{frame}[allowframebreaks]{Overview}
     \centering
     \includegraphics[height=.8\textheight]{img/whole-picture.pdf}
 
@@ -987,7 +1156,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \vfill
 
-    \begin{block}{The \textbf{client}-side: \texttt{sd.lab.linda.textual.impl.\alert{RemoteTupleSpace}}}
+    \begin{block}{The \textbf{client}-side: \texttt{{\small sd.lab.linda.textual.impl.}RemoteTupleSpace}}
         \begin{itemize}
             \item providing an implementation of the \texttt{TextualTupleSpace} interface 
             \item base on Java 11's \texttt{java.net.http.*} API 
