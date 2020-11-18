@@ -45,7 +45,7 @@
 }
 
 \begin{document}
-	
+
 %\\\\\\\\\\\\\\\\\\\\\
 \frame{\titlepage}
 %\\\\\\\\\\\\\\\\\\\\\
@@ -62,18 +62,18 @@
         \item Probably, most applications you use every day are web services
         \item[eg] Facebook, Instagram, YouTube, PayPal, Spotify, Netflix, and, yaeh, \alert{Trenitalia} too
     \end{itemize}
-    
+
     \vspace{.3cm}
 
     \item Most web services adhere to the \alert{\emph{Re}presentational \emph{S}tate \emph{T}ransfer} (ReST) architectural style, which is the \emph{de facto} standard for web services
-    
-    \vspace{.3cm} 
+
+    \vspace{.3cm}
 
     \item This means they expose a \alert{ReSTfull API} which is used to wrap a server implemented with some arbitrary technology
     %
     \begin{itemize}
         \item Such an API is usually formalised by means of some \alert{specification language} and it is publicly available
-        
+
         \item[eg] \href{https://developers.google.com/apis-explorer/\#p/youtube/v3}{YouTube Data API v3}
     \end{itemize}
 
@@ -99,21 +99,21 @@
         \begin{itemize}
             \item (Even if it is not the only choice, HTTP is usually the base protocol of choice)
         \end{itemize}
-        
+
         \vfill
-        
+
         \item Understand how ReST principles are reifyied into good practices and patterns for HTTP-based application
-        
+
         \vfill
-        
+
         \item Learn how to produce a (semi-)formal \alert{API specification} by means of de facto standard tools
-        
+
         \vfill
-        
+
         \item Learn how a ReSTful \emph{server} should be designed and implemented
-        
+
         \vfill
-        
+
         \item Learn how pre-existing, local software gave can be \alert{wrapped} within web services and \alert{distributed}
     \end{itemize}
 \end{frame}
@@ -129,17 +129,17 @@
 		\begin{center}
 			\url{\labRepo}
 		\end{center}
-		
+
 		\vfill
-		
+
 		\item Clone it on your machine using Git
 		%
 		\begin{itemize}
 		    \item[\$] \texttt{git clone \textit{<repo URL>}}
 		\end{itemize}
-		
+
 		\vfill
-		
+
 		\item We kindly suggest to import the cloned repository into some IDE (e.g. IntelliJ Idea or Eclipse) since the volume of the provided code is considerable
 		%
 		%
@@ -148,9 +148,9 @@
 		%     %
 		%     \item[\$] \texttt{./gradlew wrapper \alert{--gradle-version \textit{4.8.1}}}
 		% \end{itemize}
-		
+
 		\vfill
-		
+
 		\item In order to be able to submit your exercises, please ensure you requested access to the \href{\labGroup}{GitLab group of the course}
 	\end{itemize}
 
@@ -163,37 +163,37 @@
 
 \begin{frame}[allowframebreaks]
 \frametitle{HTTP Overview}
-    
+
     \begin{itemize}
         \item One or more \alert{clients} can communicate with a server by means of \alert{synchronous} RPC calls
-        
+
         \vspace{.3cm}
-        
+
         \item Each client issues a \alert{request} and waits for a \alert{response} from the server. In any case:
         %
         \begin{itemize}
             \item requests are directed towards an \alert{URL}, i.e. an name for a resource hosted by the server
-            
+
             \item requests specify a \alert{method}, i.e. an operation with a standard semantics to be performed on the resource
-            
+
             \item responses carry a \alert{status code} with a standard semantics
         \end{itemize}
-        
+
         \vspace{.3cm}
-        
+
         \item Each server is indefinitely \alert{waits} for incoming requests, and, as soon as they arrive, it produces and sends back a response
         %
         \begin{itemize}
             \item in doing, the server may interact with other server or \alert{databases}, behaving as a client w.r.t. them
-            
+
         \end{itemize}
-        
+
         \vspace{.3cm}
-        
+
         \item Requests may possibly provide some \alert{input arguments}, possibly carrying some \alert{return value}
-        
+
         \vspace{.3cm}
-        
+
         \item \alert{Input arguments} may be placed in several places within \alert{Requests}:
         %
         \begin{itemize}
@@ -202,9 +202,9 @@
             \item[eg] headers
             \item[eg] bodies
         \end{itemize}
-        
+
         \vspace{.3cm}
-        
+
         \item \alert{Return values} may be placed in several places within \alert{Responses}:
         %
         \begin{itemize}
@@ -212,7 +212,7 @@
             \item[eg] bodies
         \end{itemize}
     \end{itemize}
-    
+
 \end{frame}
 
 \subsection{HTTP Messages Structure}
@@ -233,14 +233,14 @@
     \begin{center}
         \includegraphics[width=\linewidth]{img/http-methods.png}
     \end{center}
-    
+
     \vfill
-    
+
     \begin{itemize}
         \item CRUD = \emph{C}reate, \emph{R}ead, \emph{U}pdate, \emph{D}elete
-        
+
         \vfill
-        
+
         \item Other HTTP methods exist
         %
         \begin{itemize}
@@ -281,7 +281,7 @@
             \texttt{/departments/disi/professors/andrea.omicini}
         \end{center}
         In such case \alert{\texttt{deptName}}=\texttt{disi} and \alert{\texttt{profName}}=\texttt{andrea.omicini}
-        
+
     \end{exampleblock}
 
 \end{frame}
@@ -302,7 +302,7 @@
             \item the \alert{\texttt{'='}} char separates keys from values
         \end{itemize}
     \end{block}
-    
+
     \begin{exampleblock}{For example, the query string:}%\small
         \begin{center}
             \texttt{/students\emph{?}\alert{name}=\textit{Giovanni}\emph{\&}\alert{gender}=\textit{male}}
@@ -321,12 +321,12 @@
         \end{center}
         %
         according to ReST best practices
-        
+
     \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Practical remarks about URLs}
-    
+
     What if some path/query parameter value contains some URL-reserved character like \texttt{'/'}, \texttt{'?'}, \texttt{'\&'}, \texttt{'\#'} or white spaces?
     %
     \begin{itemize}
@@ -337,18 +337,18 @@
             \item see also \url{https://en.wikipedia.org/wiki/Percent-encoding}
         \end{itemize}
     \end{itemize}
-    
+
     \vfill
-    
+
     \begin{exampleblock}{Example with free text}
     \begin{itemize}
         \item \texttt{Can you read this sentence/phrase?}
         \item \texttt{Can\%20you\%20read\%20this\%20sentence\%2Fphrase\%3F}
     \end{itemize}
     \end{exampleblock}
-    
+
     \vfill
-    
+
     \begin{exampleblock}{Example with regular expression}
     \begin{itemize}
         \item \texttt{\textasciicircum{}message \{ content: (.*?) \}\$}
@@ -362,9 +362,9 @@
 \begin{frame}{HTTP Headers}
     \begin{itemize}
         \item HTTP headers allow clients and servers to exchange additional information withing the request or the response, in \alert{piggybacking}
-        
+
         \vfill
-        
+
         \item The general structure of a HTTP header is a colon-separated pairs:
         %
         \begin{center}
@@ -374,9 +374,9 @@
             \texttt{\alert{X-}CustomHeader\alert{:}} & \texttt{Value} & {\tiny{}(for user-defined headers)}
         \end{tabular}
         \end{center}
-        
+
         \vfill
-        
+
         \item Main headers we will use in this course:
         %
         \begin{description}
@@ -390,7 +390,7 @@
 \subsection{MIME types}
 
 \begin{frame}[allowframebreaks]{MIME types}
-    
+
     \begin{block}{MIME type}
         The \alert{Multipurpose Internet Mail Extensions} (MIME) type is a de-facto standard way to indicate the nature and format of a document
         %
@@ -398,15 +398,15 @@
             \item general structure: \alert{\texttt{type/\textit{subType}}}
         \end{itemize}
     \end{block}
-    
+
     \framebreak
-    
+
     \begin{center}
         \includegraphics[width=\linewidth]{img/mime_types.png}
         \small
         (Source: \url{https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types})
     \end{center}
-    
+
 \end{frame}
 
 \subsection{Message bodies}
@@ -414,28 +414,28 @@
 \begin{frame}{Message bodies}
     \begin{itemize}
         \item Message bodies carry the \alert{representations} of the resources being manipulated by the client through the server
-        
+
         \vfill
-        
+
         \item They usually consist of \alert{textual files} adhering to some particular \alert{schema} (i.e. data type)
-        
+
         \vfill
-        
+
         \item Such documents are usually \alert{represented} according to a MIME type
         %
         \begin{itemize}
             \item Most common ones are \texttt{text/\alert{html}}, \texttt{application/\alert{xml}}, \texttt{application/\alert{json}}, and \href{https://en.wikipedia.org/wiki/YAML}{\texttt{application/\alert{yaml}}}
         \end{itemize}
-        
+
         \vfill
-        
+
         \item Schemas are usually defined by means of \alert{schema languages}:
         %
         \begin{itemize}
             \item \href{https://www.w3schools.com/xml/schema_intro.asp}{XML Schema} for XML
-            
+
             \item \href{https://json-schema.org/learn/getting-started-step-by-step.html}{JSON Schema} for JSON or YAML
-            
+
             \item Some attempts exist to create a (more) target-neutral schema language: \href{https://swagger.io/specification/\#schemaObject}{Open API specification}
         \end{itemize}
     \end{itemize}
@@ -468,7 +468,7 @@
             The request was received, continuing process
         \end{center}
     \end{block}
-    
+
     \begin{block}{\texttt{2xx} -- Success}
         \begin{center}
             The request was successfully received, and accepted
@@ -476,17 +476,17 @@
         %
         \begin{itemize}
             \item[eg] \alert{\texttt{200 OK}}: Standard response for successful HTTP requests
-            
+
             \item[eg] \alert{\texttt{204 No Content}}: Like 200 but response contains \alert{no body}
         \end{itemize}
     \end{block}
-    
+
     \begin{block}{\texttt{3xx} -- Redirection}
         \begin{center}
             Further action are needed to complete the request
         \end{center}
     \end{block}
-    
+
     \begin{block}{\texttt{4xx} -- Client Error}
         \begin{center}
             The request contains bad syntax or cannot be fulfilled
@@ -494,21 +494,21 @@
         %
         \begin{itemize}
             \item[eg] \alert{\texttt{400 Bad Request}}: The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax)
-            
+
             \item[eg] \alert{\texttt{401 Unauthorized}}: Authentication is required and has failed or has not yet been provided
-            
+
             \item[eg] \alert{\texttt{403 Forbidden}}: Authentication was successful but the client has no permission to perform the requested operation
-            
+
             \item[eg] \alert{\texttt{409 Conflict}}: Indicates that the request could not be processed because of conflict in the current state of the resource
         \end{itemize}
     \end{block}
-    
+
     \begin{block}{\texttt{5xx} -- Server Error}
         The server failed to fulfill an apparently valid request
         %
         \begin{itemize}
             \item[eg] \alert{\texttt{500 Internal Server Error}}: A generic error message
-            
+
             \item[eg] \alert{\texttt{501 Not Implemented}}: The server either does not recognize the request method, or it lacks the ability to fulfil the request
         \end{itemize}
     \end{block}
@@ -517,41 +517,41 @@
 \subsection{Routes}
 
 \begin{frame}{Routes}
-    
+
     \begin{itemize}
         \item The behaviour of WS is designed \& implemented through \alert{routes}
-        
+
         \vfill
-        
+
         \item There is no precise definition of what a route is, however the expression roughly refers to some \alert{possible operation} the service may expose to let clients manipulate some \alert{resource}
         %
         \begin{itemize}
             \item[eg] think about a method signature in some Java interface
         \end{itemize}
-        
+
         \vfill
-        
+
         \item ``Route'' is usually a \alert{jargon} for:
         %
         \begin{itemize}
             \item[+] an HTTP \alert{method}
-            
+
             \item[+] a (possibly \emph{parametric}) URL
-            
+
             \item[+] a set of input arguments, along with their schema, place (URL, body, query, header), and supported MIME types
-            
+
             \item[+] a set of possible status codes, along with their result types \& MIME type
         \end{itemize}
-        
+
         \vfill
-        
+
         \item The service \alert{Web API} consists of the set of its routes declarations
-        
+
         \vfill
-        
+
         \item Example of \alert{Web API} \url{https://petstore.swagger.io}
     \end{itemize}
-    
+
 \end{frame}
 
 \section{ReSTfull WS Design}
@@ -564,33 +564,33 @@ When designing a ReST-full web-service, you are encouraged to follow this proced
 %
 \begin{enumerate}
     \item structure your application in terms of \alert{resources} and \alert{sub-resources}
-    
+
     \vfill
-    
+
     \item for each (sub-)resource, define a possibly parametric \alert{path}
-    
+
     \vfill
-    
-    \item for each path, define the \alert{methods} it supports, thus defining a \alert{route} 
-    
+
+    \item for each path, define the \alert{methods} it supports, thus defining a \alert{route}
+
     \vfill
-    
+
     \item for each route, define:
     %
     \begin{enumerate}
         \item the supported \alert{query parameters} for the request
-        
+
         \item the supported input \alert{MIME types} and the \alert{schema} of the request body. if any
-        
+
         \item all the possible results, i.e.:
         %
         \begin{itemize}
             \item all possible \alert{status codes}\ldots
-            
+
             \item \ldots and the corresponding schemas for the response bodies
-            
+
         \end{itemize}
-        
+
         \item optionally, you may also define if \alert{authentication} is required and which sorts of \alert{authorizations} are needed
     \end{enumerate}
 \end{enumerate}
@@ -609,20 +609,20 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     \begin{itemize}
         \item Current version of the specification is \href{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md}{version 3.1.0}, but we will use \href{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md}{version 2.0} since it is more mature
     \end{itemize}
-    
+
     \vfill
-    
+
     \item In practice, one may actually define a service API by writing a \alert{YAML/JSON file} adhering to the OAS
-    
+
     \vfill
-    
+
     \item \href{https://swagger.io}{Swagger} is a community developing and maintaining the OAS, other than a number of useful tools easing the life of API designers and implementors
     %
     \begin{itemize}
         \item \href{https://editor.swagger.io}{Swagger Editor} is a web-based editor for writing specification files
-        
+
         \item \href{https://swagger.io/tools/swagger-codegen/}{Swagger Codegen} is a tool generating client and server stubs out of an OAS specification file
-        
+
         \item \href{https://app.swaggerhub.com}{SwaggerHub} is a web repository letting people edit, store, and publish their services APIs
     \end{itemize}
 
@@ -643,17 +643,17 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 \subsection{Overview}
 
 \begin{frame}{Client- vs. Server-side}
-    
+
     \begin{itemize}
         \item When working with HTTP, developers rarely implement the protocol from scratch
-        
+
         \vfill
 
         \item Conversely, they rely on pre-existing libraries of HTTP-based development
-        
+
         \vfill
 
-        \item Virtually all languages/platforms provide some library for HTTP 
+        \item Virtually all languages/platforms provide some library for HTTP
         %
         \begin{itemize}
             \item either via their Standard Library or via third-party libraries
@@ -684,13 +684,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \vfill
 
         \item However, the JVM ecosystem is plenty of open-source libraries for HTTP programming
-        
+
     \end{itemize}
 
     \vfill
 
     \begin{block}{JVM technologies for HTTP \textbf{server}-side}
-        \href{https://vertx.io}{Vert.X}, 
+        \href{https://vertx.io}{Vert.X},
         \href{https://javalin.io/}{\emph{Javalin}},
         \href{https://www.playframework.com/}{Play},
         \href{https://javaee.github.io/glassfish/}{Glassfish},
@@ -700,7 +700,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     \vfill
 
     \begin{block}{JVM technologies for HTTP \textbf{client}-side}
-        \href{https://vertx.io}{Vert.X}, 
+        \href{https://vertx.io}{Vert.X},
         \href{https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html}{\emph{\texttt{java.net.http.*} (since Java 11)}},
         \href{https://github.com/googleapis/google-http-java-client}{Google HTTP Client Library for Java},
         \href{https://hc.apache.org/}{Apache's HTTP Components},
@@ -714,11 +714,11 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     %
     \begin{description}
         \item[\href{https://javalin.io/}{\emph{Javalin}}] for what concerns the \alert{server}-side
-        \item[\href{https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html}{\emph{\texttt{java.net.http.*}}}] for what concerns the \alert{client}-side 
+        \item[\href{https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html}{\emph{\texttt{java.net.http.*}}}] for what concerns the \alert{client}-side
         %
         \begin{itemize}
             \item[!] please ensure your JDK is $\geq 11$
-        \end{itemize} 
+        \end{itemize}
     \end{description}
 
     \vfill
@@ -742,19 +742,19 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     %
     \begin{itemize}
         \item represent URI/URL
-        
+
         \vfill
 
         \item add \emph{query parameters} to URI/URL
-        
+
         \vfill
 
         \item URL-encode or decode strings
-        
+
         \vfill
 
         \item (de)serialize data (usually in/from XML, \alert{JSON}, or YAML)
-        
+
         \vfill
 
         \item build HTTP \emph{requests}, letting developers specify:
@@ -769,15 +769,34 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \vfill
 
         \item handle HTTP responses, possibly \emph{asynchronously} and \emph{concurrently}
-        
+
         \vfill
 
         \item configure several low-level protocol aspects
         %
         \begin{itemize}
             \item e.g. timeouts, cookies, cryptographic certificates, etc
-        \end{itemize} 
+        \end{itemize}
     \end{itemize}
+\end{frame}
+
+\begin{frame}%[allowframebreaks]
+    \frametitle{Java 11's \texttt{java.net.http.*} API}
+
+    TODO expand these slides
+
+    Quick links:
+    %
+    \begin{itemize}
+        \item \url{https://openjdk.java.net/groups/net/httpclient/intro.html}
+        \item \url{https://www.urlencoder.io/java/}
+        \item \url{https://docs.oracle.com/javase/7/docs/api/java/net/URI.html}
+        %
+        \begin{itemize}
+            \item \url{https://www.baeldung.com/java-url-vs-uri}
+        \end{itemize}
+    \end{itemize}
+
 \end{frame}
 
 \subsection{Server-side Programming}
@@ -789,7 +808,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     %
     \begin{itemize}
         \item spawn one or more servers, listening on \emph{different ports}
-        
+
         \vfill
 
         \item configure one or more \emph{routes} on each server, by specifying:
@@ -830,15 +849,29 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \begin{itemize}
             \item by specifying their \emph{status code}, body, headers, etc.
         \end{itemize}
-        
+
         \vfill
 
         \item configure several low-level protocol aspects
         %
         \begin{itemize}
             \item e.g. timeouts, connections management, cryptographic certificates, etc
-        \end{itemize} 
+        \end{itemize}
     \end{itemize}
+\end{frame}
+
+\begin{frame}%[allowframebreaks]
+    \frametitle{Javalin API}
+
+    TODO expand these slides
+
+    Quick links:
+    %
+    \begin{itemize}
+        \item \url{https://javalin.io/documentation\#getting-started}
+        \item \url{https://javalin.io/tutorials/website-example}
+    \end{itemize}
+
 \end{frame}
 
 \subsection{(De)Serialisation}
@@ -847,11 +880,11 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 \frametitle{About (De)Serialisation}
 
     \begin{itemize}
-        \item HTTP server- and client-side libraries rarely include some actual support for (de)serialising data 
-        
+        \item HTTP server- and client-side libraries rarely include some actual support for (de)serialising data
+
         \vfill
 
-        \item Generally speaking, a (de)serialisation library exposes some means to 
+        \item Generally speaking, a (de)serialisation library exposes some means to
         %
         \begin{itemize}
             \item \emph{serialise} data, i.e. convert  in-memory objects into char/byte sequences
@@ -875,12 +908,12 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \begin{itemize}
             \item (D)Econders just provide a particular means to interpret bytes/chars
             \item (De)Serialisers also provide some means to represent \emph{data structures}
-            
+
             \item[!] All data-representation formats explicitly or implicitly rely on some encoding
             %
             \begin{itemize}
                 \item[eg] most textual data representation formats rely on \texttt{UTF-8}
-            \end{itemize} 
+            \end{itemize}
         \end{itemize}
     \end{block}
 
@@ -900,13 +933,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \vfill
 
         \item However, the JVM ecosystem is plenty of open-source libraries for JSON / YAML support
-        
+
     \end{itemize}
 
     \vfill
 
     \begin{block}{JVM technologies for (de)serialisation}
-        \href{https://github.com/google/gson}{\emph{Gson}}, 
+        \href{https://github.com/google/gson}{\emph{Gson}},
         \href{https://github.com/FasterXML/jackson}{Jackson},
         \href{https://avro.apache.org/docs/1.10.0/}{Apache Avro},
         \href{https://developers.google.com/protocol-buffers}{Google's Protocol Buffers},
@@ -921,25 +954,25 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
 \begin{frame}[allowframebreaks]
     \frametitle{General (De)Serialisation Library}
-    
+
     You can expect a (de)serialisation library to expose these functionalities:
     %
     \bigskip
     %
     \begin{itemize}
         \item \emph{convert} objects of some \emph{type} into strings, according to some format
-        
+
         \bigskip
 
         \item \emph{write} objects of some \emph{type} onto output streams, according to some format
-        
+
         \bigskip
 
         \item \emph{parse} strings in some format into objects of some type \emph{type}
-        
+
         \bigskip
 
-        \item \emph{read} input streams, parse them according to some format, outputting objects of some \emph{type} 
+        \item \emph{read} input streams, parse them according to some format, outputting objects of some \emph{type}
     \end{itemize}
 
     \framebreak
@@ -980,14 +1013,14 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{itemize}
         \item Serialisation and deserialisation are somewhat \emph{asymmetrical} in OOP libraries
-        
+
         \vfill
 
         \item While serialising, libriaries know both:
         %
         \begin{itemize}
             \item the actual type of the in-memory object to be serialised
-            \item the target data representation format 
+            \item the target data representation format
         \end{itemize}
 
         \vfill
@@ -1005,7 +1038,20 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         %
         \begin{itemize}
             \item subtle technicality with deep implications
-        \end{itemize} 
+        \end{itemize}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}%[allowframebreaks]
+    \frametitle{Gson API}
+
+    TODO expand these slides
+
+    Quick links:
+    %
+    \begin{itemize}
+        \item \url{https://github.com/google/gson/blob/master/UserGuide.md}
     \end{itemize}
 
 \end{frame}
@@ -1022,17 +1068,17 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{itemize}
         \item In this Lab we will focus on designin \& implementing a \alert{web service} wrapping our \texttt{TextualSpace}s
-        
+
         \bigskip
-        
+
         \item This is the first step towards the \alert{distribution} of \linda{} tuple spaces over the network
-        
+
         \bigskip
-        
+
         \item After that, we may virtually write a \alert{web client} for any platform, thus bringing \linda{} on other platforms as well
-        
+
         \bigskip
-        
+
         \item In that case, distribution could be made \alert{transparent} by wrapping the web client behind the good old local interface
     \end{itemize}
 \end{frame}
@@ -1046,9 +1092,9 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \begin{center}
             \url{https://app.swaggerhub.com/apis/PIKA-lab/Linda-WS/2}
         \end{center}
-        
+
         \vspace{.3cm}
-        
+
         \item The proposed API exposes some routes letting clients access tuple spaces via HTTP
         % \item The proposed API exposes two main groups of routes:
         %
@@ -1056,42 +1102,42 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         %     \item one (\alert{users}) aimed at supporting clients identities management
         %     \item the other (\alert{tuple-spaces}) aimed at supporting textual spaces and coordination of clients
         % \end{itemize}
-        
+
         \framebreak
-        
+
         % \includegraphics[width=\linewidth]{img/ws-api-users.png}
-        
+
         % \framebreak
-        
+
         % \item Clients can register themselves using unique usernames, addresses, and passwords
         % %
         % \begin{itemize}
         %     \item Upon registration, they are endowed with an \href{https://it.wikipedia.org/wiki/Universally_unique_identifier}{Universally unique identifier} (UUID)
-            
+
         %     \item Clients can either be \alert{admins or users}
-            
-        %     \item In order to be authenticated, clients must provide their \alert{plain text} credential within the \alert{\texttt{Authorization}} header, in the form 
+
+        %     \item In order to be authenticated, clients must provide their \alert{plain text} credential within the \alert{\texttt{Authorization}} header, in the form
         %     %
         %     \begin{center}
         %         \texttt{\{ "username": "<value>", "password": "value" \}}
         %     \end{center}
         %     Notice that \alert{this is a BAD practice} that we do here just for simplicity
-            
+
         %     \item \alert{Unauthenticated} clients can interact with the service too, but in a restricted way
-            
-        %     \item A logged client can be referenced by means of its username, its address, or its UUID 
+
+        %     \item A logged client can be referenced by means of its username, its address, or its UUID
         %     %
         %     \begin{itemize}
         %         \item i.e. each of these fields can act as an \alert{identifier}
         %     \end{itemize}
         % \end{itemize}
-        
+
         % \framebreak
-        
+
         \includegraphics[width=\linewidth]{img/ws-api-tuple-spaces.png}
-        
+
         \framebreak
-        
+
         \item Clients may interact by issuing \alert{\linda{} operations} in the form of \alert{HTTP requests} directed towards some textual space wrapped by the service
         %
         \begin{itemize}
@@ -1100,19 +1146,19 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
             \begin{center}
                 \texttt{/linda/\alert{v2}/tuple-spaces/\{tupleSpaceName\}}
             \end{center}
-            
+
             \item tuples are \alert{JSON/YAML files} in the form
             %
             \begin{center}
                 \texttt{\{"value": "<string tuple>"\}}
             \end{center}
-            
+
             \item templates are \alert{query parameters} in the form
             %
             \begin{center}
                 \texttt{template=<regex template>}
             \end{center}
-            
+
             \item primitives are mapped into HTTP methods as follows:
             %
             \begin{center}
@@ -1124,9 +1170,9 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
                 \end{tabular}
             \end{center}
         \end{itemize}
-        
+
         \vspace{.3cm}
-        
+
         \item Consider reading the API for more details
     \end{itemize}
 \end{frame}
@@ -1143,7 +1189,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \begin{itemize}
             \item the \emph{server}-side
             \item the \emph{client}-side
-        \end{itemize} 
+        \end{itemize}
     \end{itemize}
 
     \vfill
@@ -1158,90 +1204,90 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{The \textbf{client}-side: \texttt{{\small sd.lab.linda.textual.impl.}RemoteTupleSpace}}
         \begin{itemize}
-            \item providing an implementation of the \texttt{TextualTupleSpace} interface 
-            \item base on Java 11's \texttt{java.net.http.*} API 
+            \item providing an implementation of the \texttt{TextualTupleSpace} interface
+            \item base on Java 11's \texttt{java.net.http.*} API
         \end{itemize}
     \end{block}
 
 \end{frame}
 
 % \begin{frame}{The \texttt{sd.lab.ws.*} package}
-    
+
 %     The provided code is organised in the many subpackages of \texttt{sd.lab.ws.*}
 %     %
 %     \vfill
 %     %
 %     \begin{itemize}
-        
+
 %         \item \alert{\texttt{sd.lab.ws.\textit{presentation}}} contains several classes for the \alert{(un)marshalling} of relevant data types in JSON/XML/YAML
-        
+
 %         \vfill
-        
+
 %         \item \alert{\texttt{sd.lab.ws.\textit{exceptions}}} contains several sorts of \alert{exceptions}, corresponding to as many HTTP errors
-        
+
 %         \vfill
-        
-%         \item \alert{\texttt{sd.lab.ws.\textit{storage}}} contains some classes for emulating a \alert{database} 
+
+%         \item \alert{\texttt{sd.lab.ws.\textit{storage}}} contains some classes for emulating a \alert{database}
 %         storing users or tuple spaces
-        
+
 %         \vfill
-        
+
 %         \item \alert{\texttt{sd.lab.ws.\textit{auth}}} contains some basic \alert{authentication} facilities
-        
+
 %         \vfill
-        
+
 %         \item \alert{\texttt{sd.lab.ws.\textit{routes}}} contains routes implementation \alert{stubs}
-        
+
 %         \vfill
-        
+
 %         \item \alert{\texttt{sd.lab.ws.\textit{api}}} contains routes actual \alert{business logics}
 %     \end{itemize}
 % \end{frame}
 
 % \begin{frame}{Package \texttt{sd.lab.ws.\textit{presentation}} -- Overview}
-    
+
 %     \centering
 %     \includegraphics[width=\linewidth]{img/pkg-presentation.png}
-    
+
 % \end{frame}
 
 % \begin{frame}{Package \texttt{sd.lab.ws.\textit{exceptions}} -- Overview}
-    
+
 %     \centering
 %     \includegraphics[width=\linewidth]{img/pkg-exceptions.png}
-    
+
 % \end{frame}
 
 % \begin{frame}{Package \texttt{sd.lab.ws.\textit{storage}} -- Overview}
-    
+
 %     \centering
 %     \includegraphics[width=.7\linewidth]{img/pkg-storage.png}
-    
+
 % \end{frame}
 
 % \begin{frame}{Package \texttt{sd.lab.ws.\textit{routes}} -- Overview}
-    
+
 %     \centering
 %     \includegraphics[width=\linewidth]{img/pkg-routes.png}
-    
+
 % \end{frame}
 
 % \begin{frame}{Package \texttt{sd.lab.ws.\textit{api}} -- Overview}
-    
+
 %     \centering
 %     \includegraphics[width=\linewidth]{img/pkg-api.png}
-    
+
 % \end{frame}
 
 % \begin{frame}{Main class \texttt{sd.lab.ws.\textit{Service}} -- Overview}
-    
+
 %     \centering
 %     \includegraphics[width=.5\linewidth]{img/Service.png}
-    
+
 % \end{frame}
 
 % \begin{frame}{Dynamic Structure of Paths and Routes}
-    
+
 %     \texttt{Service}
 %     \begin{itemize}
 %         \item \texttt{LindaPath}
@@ -1265,7 +1311,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 %             \end{itemize}
 %         \end{itemize}
 %     \end{itemize}
-    
+
 % \end{frame}
 
 % \section{Exercises}
@@ -1277,74 +1323,74 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 %         \begin{center}
 %             \url{https://app.swaggerhub.com/apis/PIKA-lab/Linda-WS/1}
 %         \end{center}
-        
+
 %         \vfill
-        
+
 %         \item Understand the structure of the provided code, by navigating it
-        
+
 %         \vfill
-        
+
 %         \item Localise the many TODO into the code
-        
+
 %     \end{enumerate}
 % \end{frame}
 
 % \begin{frame}{Exercise 7-1 -- Work with resources}
 %     \begin{enumerate}
 %         \item Let's focus on the \texttt{"users"} group of routes
-        
+
 %         \vfill
-        
+
 %         \item Have a look to the \texttt{UsersPath} class and the \alert{UsersApi} interface
 %         %
 %         \begin{itemize}
 %             \item Can you understand the meaning \& purpose of each one?
 %             \item Can you understand what a \alert{stub} is?
 %         \end{itemize}
-        
+
 %         \vfill
-        
+
 %         \item Localise the many TODO into the code
-        
+
 %         \vfill
-        
+
 %         \item Fill the TODOs with your solution
-        
+
 %         \vfill
-        
+
 %         \item Your solution is correct if tests in suit \texttt{TestUsers} succeed
-        
+
 %     \end{enumerate}
 % \end{frame}
 
 % \begin{frame}{Exercise 7-2 -- Wrap tuple spaces}
 %     \begin{enumerate}
 %         \item Let's focus on the \texttt{"tuple-spaces"} group of routes
-        
+
 %         \vfill
-        
+
 %         \item Have a look to the \texttt{TupleSpacePath} class and the \alert{TupleSpaceApi} interface
 %         %
 %         \begin{itemize}
 %             \item Can you understand the meaning \& purpose of each one?
 %         \end{itemize}
-        
+
 %         \vfill
-        
+
 %         \item Localise the many TODO into the code
-        
+
 %         \vfill
-        
+
 %         \item Fill the TODOs with your solution
 %         %
 %         \begin{itemize}
 %             \item this time you are required to set up routes and reason on how to implement the ReST API
 %         \end{itemize}
-        
+
 %         \vfill
-        
+
 %         \item Tests are a work in progress :)
-        
+
 %     \end{enumerate}
 % \end{frame}
 
