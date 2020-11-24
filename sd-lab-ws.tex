@@ -841,7 +841,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \end{description}
     \end{block}
 
-    \begin{exampleblock}{More details and examples}
+    \begin{exampleblock}{More details and examples}\centering
         \url{https://www.baeldung.com/java-url-vs-uri}
     \end{exampleblock}
 
@@ -912,22 +912,83 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     \lstinputlisting[language=Java,morekeywords={var}]{./code/UrlEncodeExample.java}
 \end{frame}
 
-\begin{frame}%[allowframebreaks]
+\begin{frame}[allowframebreaks]
     \frametitle{Java 11's \texttt{java.net.http.*} API}
 
-    TODO expand these slides
+    \begin{block}{General Workflow}
+        \begin{enumerate}
+            \item Create and configure an \texttt{HttpClient}
+            \item Build an \texttt{HttpRequest} via a builder
+            \item Send the request via the \texttt{HttpRequest} thorugh the \texttt{HttpClient}
+            \item Handle the \texttt{HttpResponse} asynchronously, via \texttt{CompletableFuture}s
+        \end{enumerate}
+    \end{block}
 
-    Quick links:
+    \begin{block}{Main abstractions and classes}
+        \begin{description}
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.html}{\texttt{java.net.http.\textit{HttpRequest}}}] | represents to-be-sent requests
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html}{\texttt{java.net.http.HttpRequest.\textit{Builder}}}] | provides builders for requests
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html}{\texttt{java.net.http.HttpRequest.\textit{BodyPublisher}}}] | fills a request body from some source (String, file, etc)
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html}{\texttt{java.net.http.HttpRequest.\textit{BodyPublishers}}}] | provides some default \texttt{BodyPublisher} via static methods
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.html}{\texttt{java.net.http.\textit{HttpResponse}}}] | represents to-be-received responses
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html}{\texttt{java.net.http.HttpResponse.\textit{BodyHandler}}}] | states how the body of a response should be processed
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandlers.html}{\texttt{java.net.http.HttpResponse.\textit{BodyHandlers}}}] | provides a number of default \texttt{BodyHandler}s via static methods
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpClient.html}{\texttt{java.net.http.\textit{HttpClient}}}] | entrypoint used to send requests
+        \end{description}
+    \end{block}
+
+% \end{frame}
+
+% \begin{frame}[allowframebreaks]
+%     \frametitle{Java 11's HTTP API -- Usage}
+
+    Creating a client:
     %
-    \begin{itemize}
-        \item \url{https://openjdk.java.net/groups/net/httpclient/intro.html}
-        \item \url{https://www.urlencoder.io/java/}
-        \item \url{https://docs.oracle.com/javase/7/docs/api/java/net/URI.html}
-        %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpClient.java}
+
+    \framebreak
+
+    Creating a request:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpRequest.java}
+    
+    \framebreak
+
+    Other methods exist, one for each HTTP method:
+    %
+    \begin{description}
+        \item[\texttt{reqBuilder.GET()}] | issues a GET request with no body
+        \item[\texttt{reqBuilder.PUT(bodyPublisher)}] | issues a PUT request some body
+        \item[\texttt{reqBuilder.POST(bodyPublisher)}] | issues a POST request some body
+        \item[\texttt{reqBuilder.DELETE()}] | issues a DELETE request with no body   
+    \end{description}
+
+    \framebreak
+
+    Creating a request with query parameters:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpRequestWithQuery.java}
+
+    \framebreak
+
+    Handling a response:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpResponse.java}
+
+    \framebreak
+
+    \begin{alertblock}{A few notes about HTTP clients}
         \begin{itemize}
-            \item \url{https://www.baeldung.com/java-url-vs-uri}
+            \item multiple requests can be sent via the same client instance
+            \item a new request can be sent even \emph{before} the previuos ones have received a response
         \end{itemize}
-    \end{itemize}
+    \end{alertblock}
+
+    \bigskip
+
+    \begin{exampleblock}{More details and examples}\centering
+        \url{https://openjdk.java.net/groups/net/httpclient/recipes.html}
+    \end{exampleblock}
 
 \end{frame}
 
