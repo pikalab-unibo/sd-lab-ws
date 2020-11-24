@@ -780,6 +780,138 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     \end{itemize}
 \end{frame}
 
+\begin{frame}[allowframebreaks]
+    \frametitle{Working tih URL/URI in Java}
+
+    \begin{block}{URL $\subset$ URI (Recap)}
+        \begin{description}
+            \item[Uniform Resource Identifier (URI)] | string \alert{identifying} a resource
+            \item[Uniform Resource Locator (URL)] | string \alert{locating} a resource
+        \end{description}
+        %
+        \begin{itemize}
+            \item[$\rightarrow$] all URL are URI, yet not all URI are URL
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{\texttt{URL} and \texttt{URI} classes in Java}
+        \begin{description}
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URL.html}{\texttt{java.net.\textit{URL}}}] | ancient implementation (since Java 1)
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URI.html}{\texttt{java.net.\textit{URI}}}] | novel implementation (since Java 4), RFC compliant
+        \end{description}
+        %
+        \begin{itemize}
+            \item when working with web resources the two are quite interchangeable
+            \item[!] we will mostly work with the \texttt{URI} class
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{URI general structure}
+        \begin{center}\ttfamily
+            [scheme:][//authority][path][?query][\#fragment]
+        \end{center}
+
+        \begin{itemize}
+            \item[!] When an URI represents an URL:
+            %
+            \begin{itemize}
+                \item scheme $\approx$ protocol
+                \item authority $\approx$ domain + port
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{\texttt{URI} class -- Creation}
+        \begin{description}
+            \item[\texttt{URI.create(string)}] | parses a string as an URI
+            \item[\texttt{new URI(protocol, domain, path, query, fragment)}] | constructs an URI representing an URL, out of 5 strings
+        \end{description}
+    \end{block}
+
+    \begin{block}{\texttt{URI} class -- Usage}
+        Instances of \texttt{URI} are \emph{immutable}, therefore only accessors are available
+        %
+        \begin{description}
+            \item[\texttt{uri.getScheme()}] | gets the scheme, i.e. the \emph{protocol} in case of URL (\texttt{`://'} not included) 
+            \item[\texttt{uri.getAuthority()}] | gets the authority (i.e. the \emph{domain} + \emph{port})
+            \item[\texttt{uri.getPort()}] | gets just the port as integer
+            \item[\texttt{uri.getPath()}] | gets the path (\texttt{`/'} included)  
+            \item[\texttt{uri.getQuery()}] | gets the query (\texttt{`?'} not included)  
+            \item[\texttt{uri.getFragment()}] | gets the fragment (\texttt{`\#'} not included)   
+        \end{description}
+    \end{block}
+
+    \begin{exampleblock}{More details and examples}
+        \url{https://www.baeldung.com/java-url-vs-uri}
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Working with Charsets and Encodings in Java}
+    \begin{block}{Charset vs. Encoding}
+        \begin{description}
+            \item[Charset] dictates how bytes are interpreted as chars within strings
+            \item[Encoding] rules how to represent byte/char strings using some charset
+        \end{description}
+    \end{block}
+
+    \begin{examples}{Most notable charsets}
+        \begin{itemize}
+            \item ASCII \url{https://www.asciitable.it/}
+            \item UTF-8 \url{https://www.utf8-chartable.de/}
+            \item \alert{UTF-16} \url{https://asecuritysite.com/coding/asc2}
+            %
+            \begin{itemize}
+                \item[!] modern programming languages use UTF-16 for strings
+            \end{itemize}
+        \end{itemize}
+    \end{examples}
+
+    \begin{examples}{Most notable encodings}
+        \begin{itemize}
+            \item identity (i.e. each character represents itself)
+            \item identity + some escape sequences (e.g. \texttt{$\backslash{}$n}, \texttt{$\backslash{}$t}, etc.)
+            \item URL/Percent encoding
+            \item base64 encoding (\url{https://en.wikipedia.org/wiki/Base64}) 
+            \item \ldots
+        \end{itemize}
+    \end{examples}
+
+    \begin{block}{Standard Charsets in Java}
+        Two notable charset-related classes:
+        %
+        \begin{description}
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/nio/charset/Charset.html}{\texttt{java.nio.charset.\textit{Charset}}}] | represent a charset
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/nio/charset/StandardCharsets.html}{\texttt{java.nio.charset.\textit{StandardCharsets}}}] | contains a number of standard instances of \texttt{Charset}
+        \end{description}
+    \end{block}
+
+    \begin{block}{URL (Percent) Encoding and Decoding in Java}
+        Two notable URL-econding-related classes in Java:
+        %
+        \begin{description}
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URLEncoder.html}{\texttt{java.net.\textit{URLEncoder}}}] | aimed at encoding strings in percent encoding
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URLDecoder.html}{\texttt{java.net.\textit{URLDecoder}}}] | aimed at decoding percent-encoded strings
+        \end{description}
+
+        \medskip
+
+        How to use them:
+        %
+        \begin{description}
+            \item[\texttt{URLEncoder.encode(string, charset)}] | converts \texttt{string} in a URL-encoded string using \texttt{charset}
+            \item[\texttt{URLDecoder.decode(string, charset)}] | parses \texttt{string} as a URL-encoded string using \texttt{charset}
+        \end{description}
+    \end{block}
+
+    \framebreak
+
+    Usage example:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/UrlEncodeExample.java}
+\end{frame}
+
 \begin{frame}%[allowframebreaks]
     \frametitle{Java 11's \texttt{java.net.http.*} API}
 
