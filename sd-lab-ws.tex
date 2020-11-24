@@ -1194,6 +1194,20 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \item the actual implementation is within \texttt{computeResultAsync}
     \end{itemize}
 
+    \framebreak
+
+    Factorising common operations with \alert{filters}:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinFilter.java}
+    %
+    Use cases:
+    %
+    \begin{itemize}
+        \item intercept common error situations
+        \item open common DB connections
+        \item etc.
+    \end{itemize}
+
 \end{frame}
 
 \subsection{(De)Serialisation}
@@ -1365,16 +1379,54 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
 \end{frame}
 
-\begin{frame}%[allowframebreaks]
+\begin{frame}[allowframebreaks]
     \frametitle{Gson API}
 
-    TODO expand these slides
+    \begin{block}{Main classes}
+        \begin{description}
+            \item[\href{https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/JsonElement.html}{\texttt{com.google.gson.\textit{JsonElement}}}] | root type for data AST
+            \item[\href{https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/Gson.html}{\texttt{com.google.gson.\textit{Gson}}}] | entry point for (de)serialising \texttt{JsonElement}s
+        \end{description}
+    \end{block}
 
-    Quick links:
+    \begin{exampleblock}{\texttt{JsonElement} type hierarchy}
+        \centering
+        \includegraphics[width=.5\linewidth]{./img/JsonElementCompact.pdf}
+    \end{exampleblock}
+
+    \begin{block}{\texttt{Gson} relevant methods}
+        \begin{description}
+            \item[\texttt{new Gson()}] | creates a new instance of \texttt{Gson}
+            \item[\texttt{gson.toJson(jsonElement)}] | generates a JSON string from an AST  
+            \item[\texttt{gson.fromJson(string, JsonElement.class)}] | parses an AST out of a JSON string   
+        \end{description}
+    \end{block}
+
+    \begin{exampleblock}{\texttt{JsonElement} relevant methods}
+        \centering
+        \includegraphics[height=.7\textheight]{./img/JsonElement.pdf}
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+    \frametitle{Gson Example}
+
+    Consider a simple data structure such as:
     %
-    \begin{itemize}
-        \item \url{https://github.com/google/gson/blob/master/UserGuide.md}
-    \end{itemize}
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/Person.java}
+
+    \framebreak
+
+    A serialiser for \texttt{Person}s can be designed as follows:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/PersonSerializer.java}
+
+    \framebreak
+
+    A deserialiser for \texttt{Person}s can be designed as follows:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/PersonDeserializer.java}
 
 \end{frame}
 
