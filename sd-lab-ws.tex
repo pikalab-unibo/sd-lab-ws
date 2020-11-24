@@ -1430,6 +1430,54 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
 \end{frame}
 
+\subsection{Web Service Project Structure}
+
+\begin{frame}[allowframebreaks]\frametitle{Web Service Project Structure}
+    \begin{block}{Directory view (one \texttt{resource\textit{N}} package for each resource type)}\centering
+        \includegraphics[width=.67\linewidth]{./img/ws-structure.pdf}
+    \end{block}
+
+    \begin{block}{Rationale of classes and interfaces}
+        \begin{description}
+            \item[\texttt{Service}] class | entry point for starting/stopping the a server
+            \item[\texttt{Serializer}] interface | generic serialiser for objects of type \texttt{T}
+            \item[\texttt{Deserializer}] interface | generic deserialiser for objects of type \texttt{T} 
+            \item[\texttt{Presentation}] class | entry point for getting a (de)serialiser instance for some actual type 
+            \item[\texttt{Resource\textit{N}\underline{Storage}}] interface | a type for reading/writing instances of \texttt{Resource\textit{N}} from/to a data-base
+            \item[\texttt{Resource\textit{N}\underline{Api}}] interface | a type for performing CRUD operations on instances of \texttt{Resource\textit{N}}
+            \item[\texttt{Resource\textit{N}\underline{Controller}}] interface | a type for (un)marshalling HTTP messages for \texttt{Resource\textit{N}Api}
+        \end{description}
+    \end{block}
+
+    \begin{exampleblock}{Some possible resources}
+        \begin{itemize}
+            \item[eg] Customers and Orders
+            \item[eg] Tuple tpaces
+            \item[eg] Departements, Students, and Professors 
+        \end{itemize}
+    \end{exampleblock}
+
+    \begin{alertblock}{Adding a new resource implies adding several classes}
+        For instance, to add resource $Customer$ one should:
+        %
+        \begin{itemize}
+            \item model and implement a type for \texttt{Customer}
+            \item implement a \texttt{CustomerSerializer} and a \texttt{CustomerDeserializer}
+            \item model a \texttt{CustomerStorage} and implement it
+            \item model a \texttt{CustomerApi} and implement it
+            \begin{itemize}
+                \item stating which CRUD operations are available for $Customer$s
+            \end{itemize}
+            \item model a \texttt{CustomerController} and implement it
+            \begin{itemize}
+                \item stating how HTTP requests are \emph{unmarshalled} into CRUD operations
+                \item stating how operation results are \emph{marshalled} into HTTP responses
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+
 \section{\linda{} Web Service}
 
 \subsection{Overview}
