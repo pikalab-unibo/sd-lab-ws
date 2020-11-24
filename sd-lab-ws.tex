@@ -1053,16 +1053,145 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     \end{itemize}
 \end{frame}
 
-\begin{frame}%[allowframebreaks]
+\begin{frame}[allowframebreaks]
     \frametitle{Javalin API}
 
-    TODO expand these slides
+    \begin{block}{About Javalin (\url{https://javalin.io})}
+        \begin{itemize}
+            \item Simple library for server-side HTTP programming in Java or Kotlin
+            \item Very concise, lightweight, and \alert{didattic}
+            \item Approach somewhat similar to NodeJS's \href{https://expressjs.com/it/}{Express}
+        \end{itemize}
+    \end{block}
 
-    Quick links:
+    \begin{alertblock}{Quick tutorial syntetised from}
+        \url{https://javalin.io/documentation}
+    \end{alertblock}
+
+    \framebreak
+
+    Minimal server setup in Javalin:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/Javalin101.java}
+
+    \framebreak
+
+    Setting up routes in Javalin via lambda expressions:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinRoutes.java}
+
+    \begin{itemize}
+        \item where \texttt{HTTP\_METHOD} can be any of:
+        %
+        \begin{itemize}
+            \item[] \texttt{get}, \texttt{post}, \texttt{put}, \texttt{post}, \texttt{delete}, etc.
+        \end{itemize}
+    \end{itemize}
+
+    \framebreak
+
+    Setting up routes in Javalin via ordinary OOP:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinRoutesNoLambda.java}
+
+    \framebreak
+
+    \begin{block}{What \textbf{can} one do within routes' callbacks (inspecting the \textbf{request})}
+        \begin{description}
+            \item[\texttt{ctx.\textit{body}()}] | reads the \emph{request body} as a string 
+            \item[\texttt{ctx.\textit{pathParam}(name)}] | gets a \emph{path} parameter by \texttt{name}, as string
+            \item[\texttt{ctx.\textit{attribute}(key, object)}] | stores a \texttt{key}-\texttt{object} pair into \texttt{ctx}
+            \item[\texttt{ctx.\textit{attribute}(key)}] | retrieves an \texttt{object} given its \texttt{key} from into \texttt{ctx}       
+            \item[\texttt{ctx.\textit{contentLength}()}] | gets the length of the request body   
+            \item[\texttt{ctx.\textit{contentType}()}] | gets the value of the request \texttt{Content-Type} h.  
+            \item[\texttt{ctx.\textit{header}(name)}] | gets the value of some request header by \texttt{name}   
+            \item[\texttt{ctx.\textit{url}()}] | gets the request \emph{url}   
+            \item[\texttt{ctx.\textit{queryParam}(name)}] | gets the value of a query parameter by \texttt{name}
+            \item[\texttt{ctx.\textit{queryParam}(name, default)}] | gets the value of a query parameter by \texttt{name}, or \texttt{default} if missing 
+        \end{description}
+    \end{block}
+
+    \framebreak
+
+    \begin{block}{What \textbf{can} one do within routes' callbacks (producing a \textbf{response})}
+        \begin{description}
+            \item[\texttt{ctx.\textit{result}(string)}] | fills the response body with \texttt{string}
+            \item[\texttt{ctx.\textit{result}(promise)}] | fills the response body with some \texttt{CompletableFuture} result, as soon as it is available
+            \item[\texttt{ctx.\textit{contentType}(mimeType)}] | sets the value of the response \texttt{Content-Type} header  
+            \item[\texttt{ctx.\textit{header}(name, value)}] | sets the \texttt{value} of some response header by \texttt{name}
+            \item[\texttt{ctx.\textit{status}(code)}] | sets the response status \texttt{code}         
+        \end{description}
+    \end{block}
+
+    \framebreak
+
+    \begin{block}{What \textbf{can} one do within routes' callbacks (producing \textbf{error} responses)}
+        Producing an error response is as simple as \alert{throwing}:
+        %
+        \begin{description}
+            \item[\texttt{new BadRequestResponse(msg)}] | to return a 400 response
+            \item[\texttt{new UnauthorizedResponse(msg)}] | to return a 401 response
+            \item[\texttt{new ForbiddenResponse(msg)}] | to return a 403 response
+            \item[\texttt{new NotFoundResponse(msg)}] | to return a 404 response
+            \item[\texttt{new MethodNotAllowedResponse(msg)}] | to return a 405 response
+            \item[\texttt{new ConflictResponse(msg)}] | to return a 409 response
+            \item[\texttt{new InternalServerErrorResponse(msg)}] | to return a 500 response       
+        \end{description}
+    \end{block}
+
+    \framebreak
+
+    \begin{block}{What \textbf{should} one do within routes' callbacks}
+        \begin{enumerate}
+            \item Read, deserialise, and validate the request \alert{input} parameters
+            %
+            \begin{itemize}
+                \item \emph{path}, \emph{query}, and \emph{header} parameters, other than the \emph{body}
+                \item[!] deserialise according to the \texttt{Content-Type} header value
+                \item[!] throw a new \texttt{BadRequestResponse} if deserialisation/validation fail
+            \end{itemize}
+
+            \item \alert{Authenticate} the client, using the value of the \texttt{Authorization} h.
+            %
+            \begin{itemize}
+                \item[!] throw a new \texttt{UnauthorizedResponse} if credentials are missing/invalid
+            \end{itemize}
+            
+            \item Check if the client \alert{is allowed} to perform the requested operation
+            %
+            \begin{itemize}
+                \item[!] throw a new \texttt{ForbiddenResponse} if operation is not allowed
+            \end{itemize}
+
+            \item Compute the result, possibly accessing to some data storage
+            %
+            \begin{itemize}
+                \item[!] prefer asynchronous programming whenever possible
+            \end{itemize}
+
+            \item \alert{Serialise} output values and return them to the client
+            %
+            \begin{itemize}
+                \item[!] serialise via some \emph{type} contained within the request \texttt{Accept} header  
+                \item[!] recall to set the 200 status code, and the \texttt{Content-Type} header
+            \end{itemize}
+        \end{enumerate}
+    \end{block}
+
+    \framebreak
+
+    Example stub:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinRouteStub.java}
     %
     \begin{itemize}
-        \item \url{https://javalin.io/documentation\#getting-started}
-        \item \url{https://javalin.io/tutorials/website-example}
+        \item notice that this is where \alert{(un)marshalling} occurs
+        %
+        \begin{itemize}
+            \item via the \texttt{serialise} and \texttt{deserialise} methods
+        \end{itemize}
+
+        \item the actual implementation is within \texttt{computeResultAsync}
     \end{itemize}
 
 \end{frame}
@@ -1105,7 +1234,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
             \item[!] All data-representation formats explicitly or implicitly rely on some encoding
             %
             \begin{itemize}
-                \item[eg] most textual data representation formats rely on \texttt{UTF-8}
+                \item[eg] most textual data representation formats rely on \texttt{UTF-8} or \texttt{UTF-16}
             \end{itemize}
         \end{itemize}
     \end{block}
