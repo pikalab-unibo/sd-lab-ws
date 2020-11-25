@@ -1845,6 +1845,175 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 %     \end{enumerate}
 % \end{frame}
 
+\section{Exercises}
+
+\startExercise
+
+\subsection{A WS for \linda{}} 
+
+\begin{frame}[allowframebreaks]
+\frametitle{Exercise \currentExercise{} -- A WS for \linda{}}
+
+    \begin{alertblock}{This is a \textbf{mandatory} exercise}
+        \begin{itemize}
+            \item your solution will be inspected during lab activity verification
+            \item you will be asked to discuss your solution
+            \item collaboration and discussion with your colleagues (on the forum) is allowed
+            \item asking for help on the forum is allowed
+        \end{itemize}
+    \end{alertblock}
+
+    \begin{enumerate}
+        \item Clone the initial source code from \url{\labRepo}
+        
+        \medskip
+        
+        \item Import the project into your favourite IDE as a Gradle project
+        
+        \medskip
+        
+        \item Inspect the provided code and try to figure out its purpose
+        
+        \medskip
+        
+        \item Notice that the project's \texttt{build.gradle.kts} file comes with some dependencies.
+        %
+        Try to figure out what they are and what's their purpose
+        
+        \medskip
+        
+        \item Notice that the project comes equipped with some tests. 
+        %
+        Read them and try to understand them
+    \end{enumerate}
+
+    \framebreak
+
+    Activity:
+    %
+    \bigskip
+    %
+    \begin{itemize}
+        
+        \item Complete the implementation of the \linda{} WS from \texttt{sd.lab.ws.*}        
+        
+        \bigskip
+
+        \item \ldots in order to adhere to the API described in:
+        %
+        \begin{center}
+            \url{https://app.swaggerhub.com/apis/PIKA-lab/Linda-WS/2}
+        \end{center}
+        
+        \bigskip
+        
+        \item \ldots in such a way that the \alert{unit tests} in \alert{\texttt{TestRemoteTextualSpace}} class are satisfied
+        %
+        \begin{itemize}
+            \item notice that for these tests to pass it is necessary to complete the next exercise
+        \end{itemize}
+
+        \bigskip
+        
+        \item Notice that implementing the WS requires taking care of:
+        %
+        \begin{itemize}
+            \item serialisers and deserialisers in \texttt{sd.lab.ws.presentation.*}
+            \item \texttt{TextualSpaceApi} in  \texttt{sd.lab.ws.tuplespaces.*}
+            \item \texttt{TextualSpaceController} in  \texttt{sd.lab.ws.tuplespaces.*}
+            \item \texttt{TextualSpaceStorage} in  \texttt{sd.lab.ws.tuplespaces.*}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\startExercise
+
+\subsection{Remote Textual Spaces} 
+
+\begin{frame}[allowframebreaks]
+\frametitle{Exercise \currentExercise{} -- Remote Textual Spaces}
+
+    \begin{alertblock}{This is a \textbf{mandatory} exercise}
+        \begin{itemize}
+            \item your solution will be inspected during lab activity verification
+            \item you will be asked to discuss your solution
+            \item collaboration and discussion with your colleagues (on the forum) is allowed
+            \item asking for help on the forum is allowed
+        \end{itemize}
+    \end{alertblock}
+
+    \begin{enumerate}
+        \item Clone the initial source code from \url{\labRepo}
+        
+        \medskip
+        
+        \item Import the project into your favourite IDE as a Gradle project
+        
+        \medskip
+        
+        \item Inspect the provided code and try to figure out its purpose
+        
+        \medskip
+        
+        \item Notice that the project's \texttt{build.gradle.kts} file comes with some dependencies.
+        %
+        Try to figure out what they are and what's their purpose
+        
+        \medskip
+        
+        \item Notice that the project comes equipped with some tests. 
+        %
+        Read them and try to understand them
+    \end{enumerate}
+
+    \framebreak
+
+    Activity:
+    %
+    \bigskip
+    %
+    \begin{itemize}
+        
+        \item Complete the implementation of the \texttt{sd.lab.linda.textual.impl.\alert{RemoteTextualSpace}}     
+        
+        \bigskip
+
+        \item which makes remote textual spaces hosted by the WS usable as \emph{ordinary} \texttt{TextualSpaces}
+        %
+        \begin{itemize}
+            \item in a \emph{transparent} way
+        \end{itemize}
+        
+        \bigskip
+        
+        \item \ldots in such a way that the \alert{unit tests} in \alert{\texttt{TestRemoteTextualSpace}} class are satisfied
+        %
+        \begin{itemize}
+            \item notice that for these tests to pass it is necessary to complete the previous exercise
+        \end{itemize}
+
+        \bigskip
+        
+        \item Notice that implementing the \texttt{RemoteTextualSpace} essentially requires
+        %
+        \begin{itemize}
+            \item wrapping an HTTP client 
+            \item exploiting the client to send \emph{well formed} requests towards the WS
+            \item converting responses back into \texttt{StringTuple}s or \texttt{RegexTemplate}s 
+        \end{itemize}
+
+        \bigskip
+
+        \item Recall that distribution is just hidden: it does not disappear
+        %
+        \begin{itemize}
+            \item many sorts of faults may be caused by distribution
+            \item on the client side you should handle distribution-related issues via \texttt{sd.lab.linda.core.\alert{RemoteException}}s
+        \end{itemize} 
+
+    \end{itemize}
+\end{frame}
+
 %===============================================================================
 \section*{}
 %===============================================================================
