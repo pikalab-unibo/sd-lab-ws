@@ -1449,6 +1449,14 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         \end{description}
     \end{block}
 
+    \framebreak
+
+    A data-flow view:
+    %
+    \includegraphics[width=\linewidth]{img/data-flow.pdf}
+
+    \framebreak
+
     \begin{exampleblock}{Some possible resources}
         \begin{itemize}
             \item[eg] Customers and Orders
@@ -1475,6 +1483,25 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
             \end{itemize}
         \end{itemize}
     \end{alertblock}
+
+    \framebreak
+
+    Example of customer API:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/CustomerApi.java}
+
+    \framebreak
+
+    Example of customer Controller:
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/CustomerController.java}
+
+    \framebreak
+
+    Example of customer Storage (in-memory database):
+    %
+    \lstinputlisting[language=Java,morekeywords={var}]{./code/CustomerStorage.java}
+
 \end{frame}
 
 
@@ -1578,8 +1605,10 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
             \item templates are \alert{query parameters} in the form
             %
             \begin{center}
-                \texttt{template=<regex template>}
+                \texttt{template=$urlEncode(\text{\{"value": "<regex templeate>"\}})$}
             \end{center}
+            %
+            (notice that values are URL-encoded JSON/YAML strings)
 
             \item primitives are mapped into HTTP methods as follows:
             %
@@ -1593,7 +1622,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
             \end{center}
         \end{itemize}
 
-        \vspace{.3cm}
+        \bigskip
 
         \item Consider reading the API for more details
     \end{itemize}
