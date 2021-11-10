@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - main
 env:
   LATEX_ROOT: sd-lab-ws
 jobs:
@@ -11,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
           
       - name: Build latex
         uses: xu-cheng/latex-action@v2
