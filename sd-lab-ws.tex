@@ -1,50 +1,33 @@
-% !TeX spellcheck = en_GB
-%\documentclass[handout]{beamer}\mode<presentation>{\usetheme{AMSBolognaFC}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SD Lab -- Topic
+% Giovanni Ciatto
+% Alma Mater Studiorum - Università di Bologna
+% mailto:giovanni.ciatto@unibo.it
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[handout]{beamer}\mode<handout>{\usetheme{default}}
+%
 \documentclass[presentation]{beamer}\mode<presentation>{\usetheme{AMSBolognaFC}}
-%%%%
-
+%\documentclass[handout]{beamer}\mode<handout>{\usetheme{AMSBolognaFC}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{sd-lab-ws}
-\usepackage{my-listings}
-\usepackage{forloop}
-
-\newcommand{\bs}[1]{\textbackslash{}#1}
-\newcommand{\labN}{6}
-\newcommand{\labGroup}{https://gitlab.com/pika-lab/courses/ds/ay2122}
-\newcommand{\labRepo}{\labGroup/lab-\labN}
-
-\title[L\labN{} -- ReSTful WS]{L\labN{} -- ReSTful Web Services}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title[\currentLab{} -- ReSTful WS]{ReSTful Web Services}
 %
-\subtitle[SD]{Distributed Systems / Technologies}
+\subtitle{\courseName{} (\courseAcronym) / Module \moduleN{}}
 %
-\author[Ciatto \and Omicini]
-{\emph{Giovanni Ciatto} \and Andrea Omicini\\
-	\texttt{giovanni.ciatto@unibo.it \and andrea.omicini@unibo.it}}
-%
-\institute[DISI, Univ. Bologna]
-{Dipartimento di Informatica -- Scienza e Ingegneria (DISI)\\\textsc{Alma Mater Studiorum} -- Universit{\`a} di Bologna a Cesena}
-%
-\date[A.Y. 2021/2022]{Academic Year 2021/2022}
-
-\setbeamercovered{transparent}
-
-\AtBeginSection{
-	\begin{frame}[c]\frametitle{Outline}
-		% 		\begin{multicols}{2}
-		\tableofcontents[sectionstyle=show/shaded, subsectionstyle=hide/hide, subsubsectionstyle=hide/hide]
-		% 		\end{multicols}
-	\end{frame}
+\author[\sspeaker{\gcShort} \& \mmShort]{
+    \speaker{\gcFull} \and \mmFull
+    \\ 
+    \gcEmail \and \mmEmail
 }
-
-\AtBeginSubsection{
-	\begin{frame}[c]\frametitle{Next in Line\ldots}
-		\begin{multicols}{2}
-			\small
-			\tableofcontents[sectionstyle=show/shaded, subsectionstyle=show/shaded, subsubsectionstyle=hide/hide]
-		\end{multicols}
-	\end{frame}
-}
-
+%
+\institute[\disiShort, \uniboShort]{\disi{} (\disiShort)\\\unibo}
+%
+\date[A.Y. \academicYear{}]{Academic Year \academicYear{}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\\\\\\\\\\\\\\\\\\\\\
 \frame{\titlepage}
@@ -118,43 +101,43 @@
     \end{itemize}
 \end{frame}
 
-\subsection{About the practical activities}
+% \subsection{About the practical activities}
 
-\begin{frame}
-\frametitle{Lab \labN{} Repository on GitLab}
+% \begin{frame}
+% \frametitle{Lab \labN{} Repository on GitLab}
 
-	\begin{itemize}
-		\item Examples and exercises described in this lecture are provided by means of the following GitLab repository:
-		%
-		\begin{center}
-			\url{\labRepo}
-		\end{center}
+%     \begin{itemize}
+%         \item Examples and exercises described in this lecture are provided by means of the following GitLab repository:
+        
+%         \begin{center}
+%             \url{\gitlabGroup}
+%         \end{center}
 
-		\vfill
+%         \vfill
 
-		\item Clone it on your machine using Git
-		%
-		\begin{itemize}
-		    \item[\$] \texttt{git clone \textit{<repo URL>}}
-		\end{itemize}
+%         \item Clone it on your machine using Git
+%         %
+%         \begin{itemize}
+%             \item[\$] \texttt{git clone \textit{<repo URL>}}
+%         \end{itemize}
 
-		\vfill
+%         \vfill
 
-		\item We kindly suggest to import the cloned repository into some IDE (e.g. IntelliJ Idea or Eclipse) since the volume of the provided code is considerable
-		%
-		%
-		% \begin{itemize}
-		%     \item in case of problems in importing the project on IntelliJ, try to downgrade the gradle wrapper
-		%     %
-		%     \item[\$] \texttt{./gradlew wrapper \alert{--gradle-version \textit{4.8.1}}}
-		% \end{itemize}
+%         \item We kindly suggest to import the cloned repository into some IDE (e.g. IntelliJ Idea or Eclipse) since the volume of the provided code is considerable
+%         %
+%         %
+%         % \begin{itemize}
+%         %     \item in case of problems in importing the project on IntelliJ, try to downgrade the gradle wrapper
+%         %     %
+%         %     \item[\$] \texttt{./gradlew wrapper \alert{--gradle-version \textit{4.8.1}}}
+%         % \end{itemize}
 
-		\vfill
+%         \vfill
 
-		\item In order to be able to submit your exercises, please ensure you requested access to the \href{\labGroup}{GitLab group of the course}
-	\end{itemize}
+%         \item In order to be able to submit your exercises, please ensure you requested access to the \href{\labRepo}{GitLab group of the course}
+%     \end{itemize}
 
-\end{frame}
+% \end{frame}
 
 
 \section{Recall the HTTP protocol}
