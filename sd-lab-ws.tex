@@ -363,9 +363,9 @@
         \item Main headers we will use in this course:
         %
         \begin{description}
-            \item[\texttt{Authorization}] | usually present in requests, contains the user credentials, arbitrary encoding
-            \item[\texttt{Content-Type}] | usually present in both requests and responses, contains the \alert{MIME-type} of the message body
-            \item[\texttt{Accept}] | usually present in requests, contains the \alert{MIME-type(s)} the client is able to understand
+            \item[\texttt{Authorization}] --- usually present in requests, contains the user credentials, arbitrary encoding
+            \item[\texttt{Content-Type}] --- usually present in both requests and responses, contains the \alert{MIME-type} of the message body
+            \item[\texttt{Accept}] --- usually present in requests, contains the \alert{MIME-type(s)} the client is able to understand
         \end{description}
     \end{itemize}
 \end{frame}
@@ -768,8 +768,8 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{URL $\subset$ URI (Recap)}
         \begin{description}
-            \item[Uniform Resource Identifier (URI)] | string \alert{identifying} a resource
-            \item[Uniform Resource Locator (URL)] | string \alert{locating} a resource
+            \item[Uniform Resource Identifier (URI)] --- string \alert{identifying} a resource
+            \item[Uniform Resource Locator (URL)] --- string \alert{locating} a resource
         \end{description}
         %
         \begin{itemize}
@@ -779,8 +779,8 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{\texttt{URL} and \texttt{URI} classes in Java}
         \begin{description}
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URL.html}{\texttt{java.net.\textit{URL}}}] | ancient implementation (since Java 1)
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URI.html}{\texttt{java.net.\textit{URI}}}] | novel implementation (since Java 4), RFC compliant
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URL.html}{\texttt{java.net.\textit{URL}}}] --- ancient implementation (since Java 1)
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/net/URI.html}{\texttt{java.net.\textit{URI}}}] --- novel implementation (since Java 4), RFC compliant
         \end{description}
         %
         \begin{itemize}
@@ -806,8 +806,8 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{\texttt{URI} class -- Creation}
         \begin{description}
-            \item[\texttt{URI.create(string)}] | parses a string as an URI
-            \item[\texttt{new URI(protocol, domain, path, query, fragment)}] | constructs an URI representing an URL, out of 5 strings
+            \item[\texttt{URI.create(string)}] --- parses a string as an URI
+            \item[\texttt{new URI(protocol, domain, path, query, fragment)}] --- constructs an URI representing an URL, out of 5 strings
         \end{description}
     \end{block}
 
@@ -815,12 +815,12 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         Instances of \texttt{URI} are \emph{immutable}, therefore only accessors are available
         %
         \begin{description}
-            \item[\texttt{uri.getScheme()}] | gets the scheme, i.e. the \emph{protocol} in case of URL (\texttt{`://'} not included)
-            \item[\texttt{uri.getAuthority()}] | gets the authority (i.e. the \emph{domain} + \emph{port})
-            \item[\texttt{uri.getPort()}] | gets just the port as integer
-            \item[\texttt{uri.getPath()}] | gets the path (\texttt{`/'} included)
-            \item[\texttt{uri.getQuery()}] | gets the query (\texttt{`?'} not included)
-            \item[\texttt{uri.getFragment()}] | gets the fragment (\texttt{`\#'} not included)
+            \item[\texttt{uri.getScheme()}] --- gets the scheme, i.e. the \emph{protocol} in case of URL (\texttt{`://'} not included)
+            \item[\texttt{uri.getAuthority()}] --- gets the authority (i.e. the \emph{domain} + \emph{port})
+            \item[\texttt{uri.getPort()}] --- gets just the port as integer
+            \item[\texttt{uri.getPath()}] --- gets the path (\texttt{`/'} included)
+            \item[\texttt{uri.getQuery()}] --- gets the query (\texttt{`?'} not included)
+            \item[\texttt{uri.getFragment()}] --- gets the fragment (\texttt{`\#'} not included)
         \end{description}
     \end{block}
 
@@ -844,14 +844,14 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{Main abstractions and classes}
         \begin{description}\small
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.html}{\texttt{java.net.http.\textit{HttpRequest}}}] | represents to-be-sent requests
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html}{\texttt{java.net.http.HttpRequest.\textit{Builder}}}] | provides builders for requests
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html}{\texttt{java.net.http.HttpRequest.\textit{BodyPublisher}}}] | fills a request body from some source (String, file, etc)
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html}{\texttt{java.net.http.HttpRequest.\textit{BodyPublishers}}}] | provides some default \texttt{BodyPublisher} via static methods
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.html}{\texttt{java.net.http.\textit{HttpResponse}}}] | represents to-be-received responses
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html}{\texttt{java.net.http.HttpResponse.\textit{BodyHandler}}}] | states how the body of a response should be processed
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandlers.html}{\texttt{java.net.http.HttpResponse.\textit{BodyHandlers}}}] | provides a number of default \texttt{BodyHandler}s via static methods
-            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpClient.html}{\texttt{java.net.http.\textit{HttpClient}}}] | entrypoint used to send requests
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.html}{\texttt{java.net.http.\textit{HttpRequest}}}] --- represents to-be-sent requests
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.Builder.html}{\texttt{java.net.http.HttpRequest.\textit{Builder}}}] --- provides builders for requests
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublisher.html}{\texttt{java.net.http.HttpRequest.\textit{BodyPublisher}}}] --- fills a request body from some source (String, file, etc)
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpRequest.BodyPublishers.html}{\texttt{java.net.http.HttpRequest.\textit{BodyPublishers}}}] --- provides some default \texttt{BodyPublisher} via static methods
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.html}{\texttt{java.net.http.\textit{HttpResponse}}}] --- represents to-be-received responses
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandler.html}{\texttt{java.net.http.HttpResponse.\textit{BodyHandler}}}] --- states how the body of a response should be processed
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpResponse.BodyHandlers.html}{\texttt{java.net.http.HttpResponse.\textit{BodyHandlers}}}] --- provides a number of default \texttt{BodyHandler}s via static methods
+            \item[\href{https://docs.oracle.com/en/java/javase/15/docs/api/java.net.http/java/net/http/HttpClient.html}{\texttt{java.net.http.\textit{HttpClient}}}] --- entrypoint used to send requests
         \end{description}
     \end{block}
 
@@ -872,10 +872,10 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     Other methods exist, one for each HTTP method:
     %
     \begin{description}
-        \item[\texttt{reqBuilder.GET()}] | issues a GET request with no body
-        \item[\texttt{reqBuilder.PUT(bodyPublisher)}] | issues a PUT request some body
-        \item[\texttt{reqBuilder.POST(bodyPublisher)}] | issues a POST request some body
-        \item[\texttt{reqBuilder.DELETE()}] | issues a DELETE request with no body
+        \item[\texttt{reqBuilder.GET()}] --- issues a GET request with no body
+        \item[\texttt{reqBuilder.PUT(bodyPublisher)}] --- issues a PUT request some body
+        \item[\texttt{reqBuilder.POST(bodyPublisher)}] --- issues a POST request some body
+        \item[\texttt{reqBuilder.DELETE()}] --- issues a DELETE request with no body
     \end{description}
 
     \framebreak
@@ -1013,16 +1013,16 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{What \textbf{can} one do within routes' callbacks (inspecting the \textbf{request})}
         \begin{description}
-            \item[\texttt{ctx.\textit{body}()}] | reads the \emph{request body} as a string
-            \item[\texttt{ctx.\textit{pathParam}(name)}] | gets a \emph{path} parameter by \texttt{name}, as string
-            \item[\texttt{ctx.\textit{attribute}(key, object)}] | stores a \texttt{key}-\texttt{object} pair into \texttt{ctx}
-            \item[\texttt{ctx.\textit{attribute}(key)}] | retrieves an \texttt{object} given its \texttt{key} from into \texttt{ctx}
-            \item[\texttt{ctx.\textit{contentLength}()}] | gets the length of the request body
-            \item[\texttt{ctx.\textit{contentType}()}] | gets the value of the request \texttt{Content-Type} h.
-            \item[\texttt{ctx.\textit{header}(name)}] | gets the value of some request header by \texttt{name}
-            \item[\texttt{ctx.\textit{url}()}] | gets the request \emph{url}
-            \item[\texttt{ctx.\textit{queryParam}(name)}] | gets the value of a query parameter by \texttt{name}
-            \item[\texttt{ctx.\textit{queryParam}(name, default)}] | gets the value of a query parameter by \texttt{name}, or \texttt{default} if missing
+            \item[\texttt{ctx.\textit{body}()}] --- reads the \emph{request body} as a string
+            \item[\texttt{ctx.\textit{pathParam}(name)}] --- gets a \emph{path} parameter by \texttt{name}, as string
+            \item[\texttt{ctx.\textit{attribute}(key, object)}] --- stores a \texttt{key}-\texttt{object} pair into \texttt{ctx}
+            \item[\texttt{ctx.\textit{attribute}(key)}] --- retrieves an \texttt{object} given its \texttt{key} from into \texttt{ctx}
+            \item[\texttt{ctx.\textit{contentLength}()}] --- gets the length of the request body
+            \item[\texttt{ctx.\textit{contentType}()}] --- gets the value of the request \texttt{Content-Type} h.
+            \item[\texttt{ctx.\textit{header}(name)}] --- gets the value of some request header by \texttt{name}
+            \item[\texttt{ctx.\textit{url}()}] --- gets the request \emph{url}
+            \item[\texttt{ctx.\textit{queryParam}(name)}] --- gets the value of a query parameter by \texttt{name}
+            \item[\texttt{ctx.\textit{queryParam}(name, default)}] --- gets the value of a query parameter by \texttt{name}, or \texttt{default} if missing
         \end{description}
     \end{block}
 
@@ -1030,11 +1030,11 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{What \textbf{can} one do within routes' callbacks (producing a \textbf{response})}
         \begin{description}
-            \item[\texttt{ctx.\textit{result}(string)}] | fills the response body with \texttt{string}
-            \item[\texttt{ctx.\textit{result}(promise)}] | fills the response body with some \texttt{CompletableFuture} result, as soon as it is available
-            \item[\texttt{ctx.\textit{contentType}(mimeType)}] | sets the value of the response \texttt{Content-Type} header
-            \item[\texttt{ctx.\textit{header}(name, value)}] | sets the \texttt{value} of some response header by \texttt{name}
-            \item[\texttt{ctx.\textit{status}(code)}] | sets the response status \texttt{code}
+            \item[\texttt{ctx.\textit{result}(string)}] --- fills the response body with \texttt{string}
+            \item[\texttt{ctx.\textit{result}(promise)}] --- fills the response body with some \texttt{CompletableFuture} result, as soon as it is available
+            \item[\texttt{ctx.\textit{contentType}(mimeType)}] --- sets the value of the response \texttt{Content-Type} header
+            \item[\texttt{ctx.\textit{header}(name, value)}] --- sets the \texttt{value} of some response header by \texttt{name}
+            \item[\texttt{ctx.\textit{status}(code)}] --- sets the response status \texttt{code}
         \end{description}
     \end{block}
 
@@ -1044,13 +1044,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
         Producing an error response is as simple as \alert{throwing}:
         %
         \begin{description}
-            \item[\texttt{new BadRequestResponse(msg)}] | to return a 400 response
-            \item[\texttt{new UnauthorizedResponse(msg)}] | to return a 401 response
-            \item[\texttt{new ForbiddenResponse(msg)}] | to return a 403 response
-            \item[\texttt{new NotFoundResponse(msg)}] | to return a 404 response
-            \item[\texttt{new MethodNotAllowedResponse(msg)}] | to return a 405 response
-            \item[\texttt{new ConflictResponse(msg)}] | to return a 409 response
-            \item[\texttt{new InternalServerErrorResponse(msg)}] | to return a 500 response
+            \item[\texttt{new BadRequestResponse(msg)}] --- to return a 400 response
+            \item[\texttt{new UnauthorizedResponse(msg)}] --- to return a 401 response
+            \item[\texttt{new ForbiddenResponse(msg)}] --- to return a 403 response
+            \item[\texttt{new NotFoundResponse(msg)}] --- to return a 404 response
+            \item[\texttt{new MethodNotAllowedResponse(msg)}] --- to return a 405 response
+            \item[\texttt{new ConflictResponse(msg)}] --- to return a 409 response
+            \item[\texttt{new InternalServerErrorResponse(msg)}] --- to return a 500 response
         \end{description}
     \end{block}
 
@@ -1134,13 +1134,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     \begin{block}{Rationale of classes and interfaces}
         \begin{description}
-            \item[\texttt{Service}] class | entry point for starting/stopping the a server
-%            \item[\texttt{Serializer}] interface | generic serialiser for objects of type \texttt{T}
-%            \item[\texttt{Deserializer}] interface | generic deserialiser for objects of type \texttt{T}
-%            \item[\texttt{Presentation}] class | entry point for getting a (de)serialiser instance for some actual type
-            \item[\texttt{Resource\textit{N}\underline{Storage}}] interface | a type for reading/writing instances of \texttt{Resource\textit{N}} from/to a data-base
-            \item[\texttt{Resource\textit{N}\underline{Api}}] interface | a type for performing CRUD operations on instances of \texttt{Resource\textit{N}}
-            \item[\texttt{Resource\textit{N}\underline{Controller}}] interface | a type for (un)marshalling HTTP messages for \texttt{Resource\textit{N}Api}
+            \item[\texttt{Service}] class --- entry point for starting/stopping the a server
+%            \item[\texttt{Serializer}] interface --- generic serialiser for objects of type \texttt{T}
+%            \item[\texttt{Deserializer}] interface --- generic deserialiser for objects of type \texttt{T}
+%            \item[\texttt{Presentation}] class --- entry point for getting a (de)serialiser instance for some actual type
+            \item[\texttt{Resource\textit{N}\underline{Storage}}] interface --- a type for reading/writing instances of \texttt{Resource\textit{N}} from/to a data-base
+            \item[\texttt{Resource\textit{N}\underline{Api}}] interface --- a type for performing CRUD operations on instances of \texttt{Resource\textit{N}}
+            \item[\texttt{Resource\textit{N}\underline{Controller}}] interface --- a type for (un)marshalling HTTP messages for \texttt{Resource\textit{N}Api}
         \end{description}
     \end{block}
 
