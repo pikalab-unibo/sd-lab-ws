@@ -202,19 +202,19 @@
 
 \begin{frame}{The HTTP \textbf{Request} message structure}
     \centering
-    \includegraphics[width=\linewidth]{img/http-req.png}
+    \includegraphics[width=\linewidth]{figures/http-req.png}
 \end{frame}
 
 \begin{frame}{The HTTP \textbf{Response} message structure}
     \centering
-    \includegraphics[width=\linewidth]{img/http-res.png}
+    \includegraphics[width=\linewidth]{figures/http-res.png}
 \end{frame}
 
 \subsection{HTTP Methods}
 
 \begin{frame}{HTTP Methods as CRUD operations}
     \begin{center}
-        \includegraphics[width=\linewidth]{img/http-methods.png}
+        \includegraphics[width=\linewidth]{figures/http-methods.png}
     \end{center}
 
     \vfill
@@ -237,7 +237,7 @@
 
 \begin{frame}{\textbf{Full} structure of URL}
     \begin{center}
-        \includegraphics[height=.8\textheight]{img/http-url.png}
+        \includegraphics[height=.8\textheight]{figures/http-url.png}
     \end{center}
 \end{frame}
 
@@ -385,7 +385,7 @@
     \framebreak
 
     \begin{center}
-        \includegraphics[width=\linewidth]{img/mime_types.png}
+        \includegraphics[width=\linewidth]{figures/mime_types.png}
         \small
         (Source: \url{https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types})
     \end{center}
@@ -429,12 +429,12 @@
     \vspace{-.7cm}
     \begin{columns}[t]
         \begin{column}{.49\textwidth}
-            \lstinputlisting[language=yaml]{code/User.yaml}
+            \lstinputlisting[language=yaml]{listings/User.yaml}
         \end{column}
         \hfill
         \begin{column}{.49\textwidth}
-            \lstinputlisting[language=yaml]{code/UserInstance.yaml}
-            \lstinputlisting[language=yaml]{code/UserInstance.json}
+            \lstinputlisting[language=yaml]{listings/UserInstance.yaml}
+            \lstinputlisting[language=yaml]{listings/UserInstance.json}
         \end{column}
     \end{columns}
 \end{frame}
@@ -442,7 +442,7 @@
 \subsection{Status Codes}
 
 \begin{frame}{HTTP Status Codes -- Overview}
-    \includegraphics[width=\linewidth]{img/http_status_codes.png}
+    \includegraphics[width=\linewidth]{figures/http_status_codes.png}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{HTTP Status Codes -- Ranges}
@@ -614,11 +614,11 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Main structure of a OAS specification file}
-    \lstinputlisting[language=yaml]{code/SwaggerMain.yaml}
+    \lstinputlisting[language=yaml]{listings/SwaggerMain.yaml}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Route definition example}
-    \lstinputlisting[language=yaml]{code/RouteExample.yaml}
+    \lstinputlisting[language=yaml]{listings/RouteExample.yaml}
 \end{frame}
 
 \section{HTTP in Practice}
@@ -859,13 +859,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Creating a client:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpClient.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/HttpClient.java}
 
     \framebreak
 
     Creating a request:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpRequest.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/HttpRequest.java}
 
     \framebreak
 
@@ -882,13 +882,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Creating a request with query parameters:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpRequestWithQuery.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/HttpRequestWithQuery.java}
 
     \framebreak
 
     Handling a response:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/HttpResponse.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/HttpResponse.java}
 
     \framebreak
 
@@ -987,13 +987,13 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Minimal server setup in Javalin:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/Javalin101.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/Javalin101.java}
 
     \framebreak
 
     Setting up routes in Javalin via lambda expressions:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinRoutes.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/JavalinRoutes.java}
 
     \begin{itemize}
         \item where \texttt{HTTP\_METHOD} can be any of:
@@ -1007,7 +1007,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Setting up routes in Javalin via ordinary OOP:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinRoutesNoLambda.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/JavalinRoutesNoLambda.java}
 
     \framebreak
 
@@ -1097,7 +1097,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Example stub:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinRouteStub.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/JavalinRouteStub.java}
     %
     \begin{itemize}
         \item notice that this is where \alert{(un)marshalling} occurs
@@ -1113,7 +1113,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Factorising common operations with \alert{filters}:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/JavalinFilter.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/JavalinFilter.java}
     %
     Use cases:
     %
@@ -1129,7 +1129,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
 \begin{frame}[allowframebreaks]\frametitle{Web Service Project Structure}
     \begin{block}{Directory view (one \texttt{resource\textit{N}} package for each resource type)}\centering
-        \includegraphics[width=.8\linewidth]{./img/ws-structure.pdf}
+        \includegraphics[width=.8\linewidth]{./figures/ws-structure.pdf}
     \end{block}
 
     \begin{block}{Rationale of classes and interfaces}
@@ -1148,7 +1148,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     A data-flow view:
     %
-    \includegraphics[width=\linewidth]{img/data-flow.pdf}
+    \includegraphics[width=\linewidth]{figures/data-flow.pdf}
 
     \framebreak
 
@@ -1183,19 +1183,19 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Example of customer API:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/CustomerApi.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/CustomerApi.java}
 
     \framebreak
 
     Example of customer Controller:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/CustomerController.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/CustomerController.java}
 
     \framebreak
 
     Example of customer Storage (in-memory database):
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./code/CustomerStorage.java}
+    \lstinputlisting[language=Java,morekeywords={var}]{./listings/CustomerStorage.java}
 
 \end{frame}
 
