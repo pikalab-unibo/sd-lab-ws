@@ -1031,7 +1031,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
     \begin{block}{What \textbf{can} one do within routes' callbacks (producing a \textbf{response})}
         \begin{description}
             \item[\texttt{ctx.\textit{result}(string)}] --- fills the response body with \texttt{string}
-            \item[\texttt{ctx.\textit{result}(promise)}] --- fills the response body with some \texttt{CompletableFuture} result, as soon as it is available
+            \item[\texttt{ctx.\textit{future}(promise)}] --- dalays the response to when the provided \texttt{CompletableFuture}'s result will be available
             \item[\texttt{ctx.\textit{contentType}(mimeType)}] --- sets the value of the response \texttt{Content-Type} header
             \item[\texttt{ctx.\textit{header}(name, value)}] --- sets the \texttt{value} of some response header by \texttt{name}
             \item[\texttt{ctx.\textit{status}(code)}] --- sets the response status \texttt{code}
@@ -1183,7 +1183,7 @@ The design and test phases of a ReST-full web service \alert{API} can be greatly
 
     Example of customer API:
     %
-    \lstinputlisting[language=Java,morekeywords={var}]{./listings/CustomerApi.java}
+    \lstinputlisting[language=Java,morekeywords={var},basicstyle=\ttfamily\tiny]{./listings/CustomerApi.java}
 
     \framebreak
 

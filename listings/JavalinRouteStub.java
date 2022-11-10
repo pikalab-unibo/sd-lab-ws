@@ -3,7 +3,8 @@ server.httpMethod("/path/to/:resourceId", this::onHttpMethod);
 private void onHttpMethodStub(Context ctx) throws Exception {
   String resourceId = ctx.pathParam("resourceId");
   String param = ctx.queryParam("param");
-  Integer intParam = ctx.queryParam("intParam", Integer.class).get(); // automatically throws BadRequestResponse if not Integer
+  // automatically throws BadRequestResponse if not Integer
+  var intParam = ctx.queryParam("intParam", Integer.class).get(); 
   String body = ctx.body();
 
   if (param == null || intParam == null || body == null)
@@ -16,13 +17,14 @@ private void onHttpMethodStub(Context ctx) throws Exception {
     throw new BadRequestResponse("Cannot deserialise body");
   }
 
-  CompletableFuture<TYPE_2> result = computeResultAsync(
-      resourceId, queryParam, intQueryParam, bodyValue
-  );
+  var outputMimeType = selectAcceptableType(ctx.header("Accept"));
 
-  String outputMimeType = ctx.header("Accept");
-  ctx.contentType(outputMimeType)
-     .result(
-        result.thenApply(res -> serialise(res, outputMimeType))
+  CompletableFuture<TYPE_2> asyncResult = 
+    computeResultAsync(resourceId, queryParam, intQueryParam, bodyValue)
+      .thenApply(result -> serialise(result, outputMimeType));
+  
+  ctx.contentType(outputMimeType);
+  ctx.future(() -> 
+        asyncResult.thenAccept(result -> ctx.body(result))
      );
 }
