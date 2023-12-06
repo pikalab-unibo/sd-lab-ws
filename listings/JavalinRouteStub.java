@@ -24,7 +24,5 @@ private void onHttpMethodStub(Context ctx) throws Exception {
       .thenApply(result -> serialise(result, outputMimeType));
   
   ctx.contentType(outputMimeType);
-  ctx.future(() -> 
-        asyncResult.thenAccept(result -> ctx.body(result))
-     );
+  ctx.future(() -> asyncResult.thenAccept(result -> ctx.body(result)));
 }

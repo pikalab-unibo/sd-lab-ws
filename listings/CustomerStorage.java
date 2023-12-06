@@ -1,7 +1,9 @@
 class CustomerStorage {
   private final Map<Long, Customer> customers = new HashMap<>();
   
-  Collection<? extends Customer> getAllCustomers() { return customers.valueSet(); }
+  Collection<? extends Customer> getAllCustomers() { 
+    return customers.valueSet(); 
+  }
   
   Customer createCustomer(long id, String name) {
     var customer = new Customer(id, name);
@@ -9,7 +11,9 @@ class CustomerStorage {
     return customer;
   }
   
-  Optional<Customer> getCustomerById(long id) { return Optional.ofNullable(customers.get(id)); }
+  Optional<Customer> getCustomerById(long id) { 
+    return Optional.ofNullable(customers.get(id)); 
+  }
   
   Customer replaceCustomer(Customer novel) { /* ... */ }
   
